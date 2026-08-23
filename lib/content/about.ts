@@ -3,10 +3,11 @@
 // before this site goes live.
 
 export const aboutPreview = {
-  eyebrow: "About Nalanda Academy",
-  heading: "A place where learning becomes a foundation for life.",
-  body: "Demo copy — replace with official content. Nalanda Academy brings together focused academics, dedicated teachers and a disciplined, caring campus culture so every student is prepared for what comes next.",
-  cta: { label: "Discover Our Story", href: "/about" },
+  eyebrow: "About",
+  heading: "About\nNalanda Academy",
+  tagline: "Shaping Minds. Building Character. Inspiring Futures.",
+  body: "Nalanda Academy is dedicated to nurturing young minds with knowledge, values, and vision. We provide a supportive learning environment where students can learn, grow, and prepare for a successful future.",
+  cta: { label: "Discover More", href: "/about" },
 };
 
 export const aboutStory = {
