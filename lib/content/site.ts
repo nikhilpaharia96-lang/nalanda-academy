@@ -7,6 +7,26 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.nalandaacademy.example",
 };
 
+// Hero background imagery. `isDemo: true` marks these as temporary
+// presentation visuals, not verified photographs of the real Nalanda
+// Academy campus — swap the files at the paths below (keeping the same
+// filenames/paths) once official campus photography is supplied, and this
+// object is the only thing that ever needs to change.
+export const heroImage = {
+  desktop: {
+    src: "/images/hero/nalanda-campus-hero-desktop.webp",
+    width: 1920,
+    height: 1073,
+  },
+  mobile: {
+    src: "/images/hero/nalanda-campus-hero-mobile.webp",
+    width: 959,
+    height: 1192,
+  },
+  alt: "Nalanda Academy campus — demo visual, not an official campus photograph",
+  isDemo: true,
+};
+
 export const primaryNav = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
