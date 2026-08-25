@@ -24,6 +24,76 @@ export const footerNav = [
   { label: "Contact", href: "/contact" },
 ];
 
+// ---------------------------------------------------------------------------
+// Footer-specific content. Explore reuses `footerNav`. Student/Teacher
+// Portal links point to areas that don't exist in this project yet (no
+// /student or /teacher routes) — they render as labeled, non-broken
+// "Coming Soon" items rather than linking anywhere or being left off
+// entirely, so the footer doesn't imply a portal that isn't real.
+// ---------------------------------------------------------------------------
+
+export const exploreLinks = footerNav;
+
+export const studentPortalLinks = [
+  { label: "Dashboard", icon: "layout-dashboard" as const },
+  { label: "Attendance", icon: "calendar-check" as const },
+  { label: "Fees & Payments", icon: "credit-card" as const },
+  { label: "Results", icon: "bar-chart-3" as const },
+  { label: "Notices", icon: "bell" as const },
+  { label: "Documents", icon: "file-text" as const },
+  { label: "Events", icon: "calendar-days" as const },
+  { label: "Profile & Settings", icon: "user-cog" as const },
+];
+
+export const teacherPortalLinks = [
+  { label: "Dashboard", icon: "layout-dashboard" as const },
+  { label: "My Classes", icon: "presentation" as const },
+  { label: "Students", icon: "users" as const },
+  { label: "Attendance", icon: "calendar-check" as const },
+  { label: "Results", icon: "bar-chart-3" as const },
+  { label: "Notices", icon: "bell" as const },
+  { label: "Events", icon: "calendar-days" as const },
+  { label: "Profile & Settings", icon: "user-cog" as const },
+];
+
+export const footerFeatureStrip = [
+  {
+    icon: "graduation-cap" as const,
+    title: "Quality Education",
+    body: "Committed to academic excellence and holistic development.",
+  },
+  {
+    icon: "users-round" as const,
+    title: "Strong Community",
+    body: "Collaborating with parents and community for a better future.",
+  },
+  {
+    icon: "shield-check" as const,
+    title: "Safe & Supportive",
+    body: "A secure and nurturing environment for every learner.",
+  },
+  {
+    icon: "trophy" as const,
+    title: "Inspire & Empower",
+    body: "Encouraging creativity, confidence and character to achieve greatness.",
+  },
+];
+
+export const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Use", href: "/terms-of-use" },
+  { label: "Refund Policy", href: "/refund-policy" },
+];
+
+export const newsletterCopy = {
+  heading: "Newsletter",
+  description: "Stay updated with the latest news, events and important announcements.",
+  placeholder: "Enter your email address",
+};
+
+export const footerMission =
+  "Empowering minds. Inspiring excellence. Building a brighter future together.";
+
 // Placeholder contact details — replace with official information.
 export const contactInfo = {
   address: "[Official school address to be added]",
