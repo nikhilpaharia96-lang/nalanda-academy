@@ -1,12 +1,25 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { GraduationCap, LineChart, Megaphone, CalendarDays, ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { siteConfig, heroImage } from "@/lib/content/site";
+import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
+import { FadeUp, StaggerGroup } from "@/components/motion/Reveal";
+import { siteConfig } from "@/lib/content/site";
+import { cn } from "@/lib/utils";
 
 const easing = [0.16, 1, 0.3, 1] as const;
+
+// Same destinations as the QuickAccess section below — kept in sync here so
+// the hero's floating strip and the in-page section never drift apart.
+const quickLinks = [
+  { title: "Admissions", body: "Start your application to Nalanda Academy.", href: "/admission", Icon: GraduationCap },
+  { title: "Results", body: "View HSLC results by academic year.", href: "/results", Icon: LineChart },
+  { title: "Notices", body: "Read the latest official school notices.", href: "/notices", Icon: Megaphone },
+  { title: "Events", body: "See what's happening on campus.", href: "/events", Icon: CalendarDays },
+];
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -16,11 +29,8 @@ export function Hero() {
   const initial = shouldReduceMotion ? false : undefined;
 
   return (
-    <section className="relative isolate flex min-h-[560px] items-end overflow-hidden bg-navy-950 pt-[72px] sm:min-h-[640px] lg:min-h-[720px] lg:items-center">
-      {/* Cinematic background layer — subtle scale/reveal on load.
-          DEMO visual (see lib/content/site.ts `heroImage`), not an official
-          campus photograph — replace the files at heroImage.desktop/mobile
-          with real photography when supplied. */}
+    <section className="relative isolate overflow-hidden bg-navy-950 pt-[72px]">
+      {/* Cinematic background layer — subtle scale/reveal on load */}
       <motion.div
         aria-hidden
         initial={initial ?? { scale: 1.08, opacity: 0.6 }}
@@ -28,23 +38,10 @@ export function Hero() {
         transition={{ duration: 1.4, ease: easing }}
         className="absolute inset-0 -z-20"
       >
-        {/* Mobile/tablet crop */}
-        <Image
-          src={heroImage.mobile.src}
-          alt={heroImage.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover lg:hidden"
-        />
-        {/* Desktop crop */}
-        <Image
-          src={heroImage.desktop.src}
-          alt={heroImage.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="hidden object-cover lg:block"
+        <PlaceholderImage
+          label="Campus photography placeholder — replace with official imagery"
+          tone="navy"
+          className="h-full w-full rounded-none border-0"
         />
       </motion.div>
 
@@ -54,7 +51,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 hidden lg:block"
         style={{
           background:
-            "linear-gradient(90deg, rgba(10,26,51,0.97) 0%, rgba(10,26,51,0.92) 32%, rgba(10,26,51,0.66) 55%, rgba(10,26,51,0.28) 75%, rgba(10,26,51,0.05) 100%)",
+            "linear-gradient(90deg, rgba(10,26,51,0.97) 0%, rgba(10,26,51,0.93) 30%, rgba(10,26,51,0.72) 52%, rgba(10,26,51,0.34) 74%, rgba(10,26,51,0.08) 100%)",
         }}
       />
 
@@ -64,8 +61,16 @@ export function Hero() {
         className="absolute inset-0 -z-10 lg:hidden"
         style={{
           background:
-            "linear-gradient(180deg, rgba(10,26,51,0.96) 0%, rgba(10,26,51,0.88) 40%, rgba(10,26,51,0.72) 65%, rgba(10,26,51,0.9) 100%)",
+            "linear-gradient(180deg, rgba(10,26,51,0.97) 0%, rgba(10,26,51,0.9) 38%, rgba(10,26,51,0.78) 62%, rgba(10,26,51,0.95) 100%)",
         }}
+      />
+
+      {/* Deepening wash along the very bottom edge, so the floating strip
+          always sits on a readable, consistently dark surface regardless of
+          the underlying photograph. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-navy-950/95 to-transparent sm:h-48 lg:h-56"
       />
 
       {/* Quiet grid texture, consistent with the site's editorial mark */}
@@ -79,13 +84,13 @@ export function Hero() {
         }}
       />
 
-      <Container className="relative py-16 sm:py-24 lg:py-32">
+      <Container className="relative flex flex-col pb-14 pt-14 sm:pb-16 sm:pt-20 lg:min-h-[720px] lg:justify-center lg:pb-40 lg:pt-24">
         <div className="max-w-xl">
           <motion.p
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: easing }}
-            className="chapter-mark mb-5 font-data text-xs font-medium uppercase tracking-[0.3em] text-gold-400"
+            className="mb-4 font-display text-xl italic font-medium tracking-wide text-gold-400 sm:text-2xl"
           >
             Welcome to
           </motion.p>
@@ -94,32 +99,25 @@ export function Hero() {
             initial={initial ?? { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: easing, delay: 0.12 }}
-            className="font-display text-[42px] font-semibold leading-[1.04] tracking-tight text-white sm:text-[52px] md:text-6xl lg:text-7xl xl:text-[5.25rem]"
+            className="font-display text-[34px] font-bold leading-[1.08] tracking-tight text-white sm:text-[44px] md:text-5xl lg:text-6xl xl:text-[4.25rem]"
           >
-            {siteConfig.name}
+            <span className="block">NALANDA ACADEMY</span>
+            <span className="block text-gold-400">NURTURING MINDS.</span>
+            <span className="block text-gold-400">SHAPING FUTURES.</span>
           </motion.h1>
-
-          <motion.p
-            initial={initial ?? { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: easing, delay: 0.3 }}
-            className="mt-4 font-display text-base font-semibold uppercase tracking-[0.08em] text-gold-400 sm:text-lg lg:text-xl"
-          >
-            Building Knowledge. Inspiring Excellence.
-          </motion.p>
 
           <motion.div
             initial={initial ?? { opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "4rem" }}
-            transition={{ duration: 0.7, ease: easing, delay: 0.45 }}
+            animate={{ opacity: 1, width: "4.5rem" }}
+            transition={{ duration: 0.7, ease: easing, delay: 0.4 }}
             className="mt-6 h-[3px] rounded-full bg-gold-500"
           />
 
           <motion.p
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easing, delay: 0.55 }}
-            className="mt-6 max-w-md text-base leading-relaxed text-white/70 sm:text-lg"
+            transition={{ duration: 0.6, ease: easing, delay: 0.52 }}
+            className="mt-6 max-w-md text-base leading-relaxed text-white/75 sm:text-lg"
           >
             {siteConfig.description}
           </motion.p>
@@ -127,7 +125,7 @@ export function Hero() {
           <motion.div
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easing, delay: 0.7 }}
+            transition={{ duration: 0.6, ease: easing, delay: 0.66 }}
             className="mt-9 flex flex-wrap gap-3 sm:gap-4"
           >
             <Button
@@ -136,7 +134,7 @@ export function Hero() {
               withArrow
               className="bg-gold-500 text-navy-950 shadow-[var(--shadow-md)] hover:bg-gold-400"
             >
-              Explore Academy
+              Explore Our Academy
             </Button>
             <Button
               href="/admission"
@@ -144,11 +142,70 @@ export function Hero() {
               withArrow
               className="border-white/30 bg-white/[0.04] text-white backdrop-blur-sm hover:border-gold-400 hover:bg-white/10 hover:text-gold-100"
             >
-              Admission
+              Admissions Open 2025–26
             </Button>
           </motion.div>
         </div>
+
+        {/* Mobile / tablet: quick links stay in normal document flow as a
+            horizontally scrollable row, directly beneath the CTAs. */}
+        <StaggerGroup className="mt-10 -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 sm:-mx-8 sm:px-8 lg:hidden">
+          {quickLinks.map(({ title, body, href, Icon }) => (
+            <FadeUp as="li" key={title} className="list-none">
+              <QuickLinkCard title={title} body={body} href={href} Icon={Icon} className="w-[210px] shrink-0 snap-start sm:w-[240px]" />
+            </FadeUp>
+          ))}
+        </StaggerGroup>
+
+        {/* Desktop: premium floating strip, docked near the bottom of the
+            hero, overlapping the campus photograph above it. Kept fully
+            inside the hero's own bounds so it never overlaps the QuickAccess
+            section that follows on the page. */}
+        <StaggerGroup className="absolute inset-x-0 bottom-8 z-20 hidden lg:block">
+          <div className="grid w-full grid-cols-4 divide-x divide-line overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-lg)]">
+            {quickLinks.map(({ title, body, href, Icon }) => (
+              <FadeUp as="li" key={title} className="list-none">
+                <QuickLinkCard title={title} body={body} href={href} Icon={Icon} className="h-full" />
+              </FadeUp>
+            ))}
+          </div>
+        </StaggerGroup>
       </Container>
     </section>
+  );
+}
+
+function QuickLinkCard({
+  title,
+  body,
+  href,
+  Icon,
+  className,
+}: {
+  title: string;
+  body: string;
+  href: string;
+  Icon: typeof GraduationCap;
+  className?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "focus-ring group flex h-full flex-col justify-between gap-4 rounded-xl bg-white px-5 py-5 shadow-[var(--shadow-md)] transition-colors hover:bg-paper lg:rounded-none lg:shadow-none",
+        className
+      )}
+    >
+      <div className="flex items-center justify-between">
+        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-paper text-navy-950 transition-colors group-hover:bg-navy-950 group-hover:text-gold-400">
+          <Icon className="h-5 w-5" />
+        </span>
+        <ArrowUpRight className="h-4 w-4 text-slate-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-500" />
+      </div>
+      <div>
+        <h3 className="font-display text-base font-semibold text-navy-950">{title}</h3>
+        <p className="mt-1 text-sm text-slate-600">{body}</p>
+      </div>
+    </Link>
   );
 }
