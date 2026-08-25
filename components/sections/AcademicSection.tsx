@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   type LucideIcon,
@@ -31,6 +33,10 @@ import {
 } from "@/lib/content/academics";
 
 const easing = [0.16, 1, 0.3, 1] as const;
+
+// Drop a replacement at this path (see the README in the same folder for
+// specs) and it swaps in automatically — no code changes required.
+const CLASSROOM_IMAGE_SRC = "/images/academics/classroom-learning.webp";
 
 const iconMap: Record<string, LucideIcon> = {
   "graduation-cap": GraduationCap,
@@ -76,6 +82,8 @@ function RuleHeading({ children }: { children: React.ReactNode }) {
 }
 
 export function AcademicSection() {
+  const [classroomImageFailed, setClassroomImageFailed] = useState(false);
+
   return (
     <section className="bg-paper">
       {/* ================= 1. TOP SPLIT HERO ================= */}
@@ -125,21 +133,43 @@ export function AcademicSection() {
             />
             <div className="absolute inset-3 overflow-hidden rounded-[var(--radius-xl)] lg:inset-0 lg:rounded-none">
               <div className="h-full w-full lg:hidden">
-                <PlaceholderImage
-                  label={academicsHero.imageLabel}
-                  tone="navy"
-                  className="h-full w-full rounded-[var(--radius-xl)] border-0"
-                />
+                {classroomImageFailed ? (
+                  <PlaceholderImage
+                    label={academicsHero.imageLabel}
+                    tone="navy"
+                    className="h-full w-full rounded-[var(--radius-xl)] border-0"
+                  />
+                ) : (
+                  <Image
+                    src={CLASSROOM_IMAGE_SRC}
+                    alt="Students learning in a Nalanda Academy classroom"
+                    fill
+                    sizes="100vw"
+                    className="rounded-[var(--radius-xl)] object-cover"
+                    onError={() => setClassroomImageFailed(true)}
+                  />
+                )}
               </div>
               <div
-                className="hidden h-full w-full lg:block"
+                className="relative hidden h-full w-full lg:block"
                 style={{ clipPath: "polygon(6.7% 0%, 100% 0%, 100% 100%, 0.7% 100%)" }}
               >
-                <PlaceholderImage
-                  label={academicsHero.imageLabel}
-                  tone="navy"
-                  className="h-full w-full rounded-none border-0"
-                />
+                {classroomImageFailed ? (
+                  <PlaceholderImage
+                    label={academicsHero.imageLabel}
+                    tone="navy"
+                    className="h-full w-full rounded-none border-0"
+                  />
+                ) : (
+                  <Image
+                    src={CLASSROOM_IMAGE_SRC}
+                    alt="Students learning in a Nalanda Academy classroom"
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="object-cover"
+                    onError={() => setClassroomImageFailed(true)}
+                  />
+                )}
               </div>
             </div>
           </motion.div>
