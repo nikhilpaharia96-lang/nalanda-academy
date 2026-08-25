@@ -1,10 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
-import { siteConfig } from "@/lib/content/site";
+import { siteConfig, heroImage } from "@/lib/content/site";
 
 const easing = [0.16, 1, 0.3, 1] as const;
 
@@ -17,7 +17,10 @@ export function Hero() {
 
   return (
     <section className="relative isolate flex min-h-[560px] items-end overflow-hidden bg-navy-950 pt-[72px] sm:min-h-[640px] lg:min-h-[720px] lg:items-center">
-      {/* Cinematic background layer — subtle scale/reveal on load */}
+      {/* Cinematic background layer — subtle scale/reveal on load.
+          DEMO visual (see lib/content/site.ts `heroImage`), not an official
+          campus photograph — replace the files at heroImage.desktop/mobile
+          with real photography when supplied. */}
       <motion.div
         aria-hidden
         initial={initial ?? { scale: 1.08, opacity: 0.6 }}
@@ -25,10 +28,23 @@ export function Hero() {
         transition={{ duration: 1.4, ease: easing }}
         className="absolute inset-0 -z-20"
       >
-        <PlaceholderImage
-          label="Campus photography placeholder — replace with official imagery"
-          tone="navy"
-          className="h-full w-full rounded-none border-0"
+        {/* Mobile/tablet crop */}
+        <Image
+          src={heroImage.mobile.src}
+          alt={heroImage.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover lg:hidden"
+        />
+        {/* Desktop crop */}
+        <Image
+          src={heroImage.desktop.src}
+          alt={heroImage.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="hidden object-cover lg:block"
         />
       </motion.div>
 
