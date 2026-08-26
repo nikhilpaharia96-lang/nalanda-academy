@@ -133,6 +133,11 @@ export const campusFacilityShowcase: (Facility & { icon: string; number: string 
     description: "Spaces supporting fitness, teamwork and student development.",
     imageQuery: "school sports field students",
     isPlaceholder: true,
+    image: {
+      src: "/images/facilities/sports-facilities.webp",
+      alt: "Students running on an outdoor athletics track — AI-generated concept visual, not an official Nalanda Academy photograph",
+      isDemo: true,
+    },
   },
   {
     slug: "auditorium",
