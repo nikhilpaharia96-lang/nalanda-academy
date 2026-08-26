@@ -17,7 +17,17 @@ export const campusHero = {
   headingAccent: "Excellence",
   description:
     "Nalanda Academy provides a safe, modern and stimulating environment where students learn, grow, and thrive. Our facilities are designed to support academic excellence and holistic development.",
-  imageLabel: "Campus exterior photography placeholder — replace with official imagery",
+  // `isDemo: true` marks this as a temporary presentation visual — it is
+  // NOT a verified photograph of the real Nalanda Academy campus. Replace
+  // the file at `image.src` (same filename/path) with official, approved
+  // campus photography when supplied — no component changes needed.
+  image: {
+    src: "/images/facilities/campus-exterior.webp",
+    width: 1600,
+    height: 901,
+    alt: "College campus exterior with gardens — demo visual, not an official Nalanda Academy photograph",
+    isDemo: true,
+  },
   quote: {
     lines: ["Great facilities", "create great", "opportunities."],
     accent: "opportunities.",
