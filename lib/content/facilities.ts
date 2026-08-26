@@ -187,7 +187,16 @@ export const additionalFacilities = [
 ];
 
 export const campusImageFeature = {
-  imageLabel: "Campus grounds / garden photography placeholder — replace with official imagery",
+  // `isDemo: true` marks this as a temporary presentation visual — it is
+  // an AI-generated concept image, NOT a verified photograph of the real
+  // Nalanda Academy campus. Replace the file at `image.src` (same
+  // filename/path) with official, approved campus photography when
+  // supplied — no component changes needed.
+  image: {
+    src: "/images/facilities/campus-grounds.webp",
+    alt: "Landscaped campus grounds with lawns, walkways and gardens — AI-generated concept visual, not an official Nalanda Academy photograph",
+    isDemo: true,
+  },
 };
 
 // Demo/placeholder entries — confirm which facilities actually exist on
