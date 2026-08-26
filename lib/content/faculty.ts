@@ -3,10 +3,17 @@ import type { FacultyMember } from "@/lib/types";
 // ---------------------------------------------------------------------------
 // Homepage "Our Faculty" editorial section — kept separate from
 // `facultyMembers` below (which also powers /faculty) so that page is
-// unaffected by this section's copy/design. No real teacher names,
-// qualifications, experience or photographs are used anywhere here — every
-// field is clearly-marked placeholder content. Replace with official staff
-// data supplied by the school administration before publishing.
+// unaffected by this section's copy/design.
+//
+// DEMO DATA NOTICE: the photos and bio fields below (name, designation,
+// qualification, experience, quote) are placeholder/demo content for design
+// review only. Photos are stand-in portraits — they do not depict, name, or
+// describe real Nalanda Academy staff, and nothing here should be published
+// as official. Each demo entry is flagged `isDemo: true`, which renders a
+// small "Demo Profile" badge on its photo.
+//
+// TO REPLACE WITH REAL DATA: see "files to update" note at the bottom of
+// this file.
 // ---------------------------------------------------------------------------
 
 export const facultyHero = {
@@ -19,18 +26,22 @@ export const facultyHero = {
   cta: { label: "Meet All Faculty", href: "/faculty" },
 };
 
-// No official profile has been supplied yet. Do not invent a name,
-// photograph, qualification or designation — render the explicit
-// placeholder state in the UI instead of demo personal details.
+// DEMO CONTENT — for design/layout review only. This is not an official
+// profile: the name, designation, qualification, experience and quote below
+// are fictional placeholders, and the photo is a stand-in portrait, not a
+// real staff photograph. Replace with school-confirmed data before publishing
+// (see note at bottom of file for exactly which fields to update).
 export const featuredFaculty = {
-  isPlaceholder: true as const,
-  photoAlt: "Faculty portrait placeholder — replace with official photography",
+  isPlaceholder: false as const,
+  isDemo: true as const,
+  photoUrl: "/images/faculty/demo-faculty-07-principal.png",
+  photoAlt: "Demo portrait — placeholder for featured faculty photography",
   label: "Featured Faculty",
-  name: null as string | null,
-  designation: null as string | null,
-  qualification: null as string | null,
-  experience: null as string | null,
-  quote: null as string | null,
+  name: "Demo Faculty Profile" as string | null,
+  designation: "Principal (Demo)" as string | null,
+  qualification: "Qualification Placeholder" as string | null,
+  experience: "Experience Placeholder" as string | null,
+  quote: "Demo quote placeholder — replace with an official statement." as string | null,
   placeholderNote: "Official faculty information will be published here.",
 };
 
@@ -95,19 +106,44 @@ export const facultyCta = {
   button: { label: "View All Faculty", href: "/faculty" },
 };
 
-// Placeholder faculty entries. No real teacher names are used — replace with
-// official staff data supplied by the school before publishing.
+// DEMO faculty entries for design/layout review. Names, designations,
+// subjects and experience are clearly fictional placeholders — not real
+// staff data. Photos are stand-in portraits (not depictions of actual
+// Nalanda Academy teachers). Each entry is flagged `isDemo: true`, which
+// renders a small "Demo Profile" badge in the UI.
+//
+// Replace with official staff data supplied by the school before publishing
+// (see note at bottom of file for exactly which fields to update).
 export const facultyMembers: FacultyMember[] = [
-  { id: "f1", name: "Faculty Name", designation: "Senior Teacher", subject: "English", department: "Languages", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f2", name: "Faculty Name", designation: "Senior Teacher", subject: "Mathematics", department: "Sciences", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f3", name: "Faculty Name", designation: "Teacher", subject: "Physics", department: "Sciences", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f4", name: "Faculty Name", designation: "Teacher", subject: "Chemistry", department: "Sciences", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f5", name: "Faculty Name", designation: "Teacher", subject: "Biology", department: "Sciences", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f6", name: "Faculty Name", designation: "Teacher", subject: "History", department: "Humanities", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f7", name: "Faculty Name", designation: "Teacher", subject: "Geography", department: "Humanities", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f8", name: "Faculty Name", designation: "Teacher", subject: "Computer Science", department: "Sciences", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
-  { id: "f9", name: "Faculty Name", designation: "Teacher", subject: "Physical Education", department: "Sports", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
+  { id: "f1", name: "Faculty Member 01", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Languages", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-01.png", isDemo: true },
+  { id: "f2", name: "Faculty Member 02", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-02.png", isDemo: true },
+  { id: "f3", name: "Faculty Member 03", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-03.png", isDemo: true },
+  { id: "f4", name: "Faculty Member 04", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-04.png", isDemo: true },
+  { id: "f5", name: "Faculty Member 05", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-05.png", isDemo: true },
+  { id: "f6", name: "Faculty Member 06", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Humanities", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-06.png", isDemo: true },
+  { id: "f7", name: "Faculty Member 07", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Humanities", photoAlt: "Demo portrait — placeholder faculty photo", isPlaceholder: true },
+  { id: "f8", name: "Faculty Member 08", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-08-spare.png", isDemo: true },
+  { id: "f9", name: "Faculty Member 09", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sports", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
 ];
 
 export const departments = Array.from(new Set(facultyMembers.map((f) => f.department)));
 export const subjects = Array.from(new Set(facultyMembers.map((f) => f.subject)));
+
+// ---------------------------------------------------------------------------
+// FILES TO UPDATE WHEN OFFICIAL FACULTY DATA ARRIVES
+// ---------------------------------------------------------------------------
+// This is the ONLY file that needs content changes. No component files need
+// to be touched — FacultySectionView, FacultyCard and FacultyPhoto all read
+// from here.
+//
+// 1. Add real photo files under /public/images/faculty/ (any filename).
+// 2. For `featuredFaculty`: set photoUrl to the real path, set isDemo to
+//    false, and fill in the real name/designation/qualification/experience/
+//    quote (or leave as `isPlaceholder: true` with photoUrl omitted if no
+//    profile is ready yet).
+// 3. For each entry in `facultyMembers`: set photoUrl to the real photo
+//    path, set isDemo to false (or remove it), and replace name/designation/
+//    subject/department with real values. Entries without a photoUrl (f7,
+//    f9) already show the existing text placeholder — add photoUrl to them
+//    the same way once photos are available.
+// ---------------------------------------------------------------------------
