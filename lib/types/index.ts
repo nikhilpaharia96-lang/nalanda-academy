@@ -1,3 +1,11 @@
+export interface FacilityImage {
+  src: string;
+  alt: string;
+  isDemo?: boolean;
+  width?: number;
+  height?: number;
+}
+
 export interface Facility {
   slug: string;
   name: string;
@@ -5,6 +13,7 @@ export interface Facility {
   description: string;
   imageQuery: string; // used to derive a placeholder image
   isPlaceholder?: boolean;
+  image?: FacilityImage;
 }
 
 export interface FacultyMember {
