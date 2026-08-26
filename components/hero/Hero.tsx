@@ -1,16 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { GraduationCap, LineChart, Megaphone, CalendarDays, ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
-import { FadeUp, StaggerGroup } from "@/components/motion/Reveal";
 import { siteConfig } from "@/lib/content/site";
-import { cn } from "@/lib/utils";
 
 const easing = [0.16, 1, 0.3, 1] as const;
 
@@ -20,15 +16,6 @@ const easing = [0.16, 1, 0.3, 1] as const;
 // intentional at both aspect ratios (wide desktop vs. tall mobile).
 const HERO_IMAGE_DESKTOP_SRC = "/images/hero/nalanda-campus-hero-desktop.webp";
 const HERO_IMAGE_MOBILE_SRC = "/images/hero/nalanda-campus-hero-mobile.webp";
-
-// Same destinations as the QuickAccess section below — kept in sync here so
-// the hero's floating strip and the in-page section never drift apart.
-const quickLinks = [
-  { title: "Admissions", body: "Start your application to Nalanda Academy.", href: "/admission", Icon: GraduationCap },
-  { title: "Results", body: "View HSLC results by academic year.", href: "/results", Icon: LineChart },
-  { title: "Notices", body: "Read the latest official school notices.", href: "/notices", Icon: Megaphone },
-  { title: "Events", body: "See what's happening on campus.", href: "/events", Icon: CalendarDays },
-];
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -144,7 +131,7 @@ export function Hero() {
         }}
       />
 
-      <Container className="relative flex flex-col pb-14 pt-14 sm:pb-16 sm:pt-20 lg:min-h-[720px] lg:justify-center lg:pb-40 lg:pt-24">
+      <Container className="relative flex flex-col pb-16 pt-14 sm:pb-20 sm:pt-20 lg:min-h-[640px] lg:justify-center lg:pb-24 lg:pt-24">
         <div className="max-w-xl">
           {/* Eyebrow — small gold mark + tracked label, replaces the old
               italic "Welcome to" line with the site's editorial dash motif. */}
@@ -205,66 +192,7 @@ export function Hero() {
             </Button>
           </motion.div>
         </div>
-
-        {/* Mobile / tablet: quick links stay in normal document flow as a
-            horizontally scrollable row, directly beneath the CTAs. */}
-        <StaggerGroup className="mt-10 -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1 sm:-mx-8 sm:px-8 lg:hidden">
-          {quickLinks.map(({ title, body, href, Icon }) => (
-            <FadeUp as="li" key={title} className="list-none">
-              <QuickLinkCard title={title} body={body} href={href} Icon={Icon} className="w-[210px] shrink-0 snap-start sm:w-[240px]" />
-            </FadeUp>
-          ))}
-        </StaggerGroup>
-
-        {/* Desktop: premium floating strip, docked near the bottom of the
-            hero, overlapping the campus photograph above it. Kept fully
-            inside the hero's own bounds so it never overlaps the QuickAccess
-            section that follows on the page. */}
-        <StaggerGroup className="absolute inset-x-0 bottom-8 z-20 hidden lg:block">
-          <div className="grid w-full grid-cols-4 divide-x divide-line overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-lg)]">
-            {quickLinks.map(({ title, body, href, Icon }) => (
-              <FadeUp as="li" key={title} className="list-none">
-                <QuickLinkCard title={title} body={body} href={href} Icon={Icon} className="h-full" />
-              </FadeUp>
-            ))}
-          </div>
-        </StaggerGroup>
       </Container>
     </section>
-  );
-}
-
-function QuickLinkCard({
-  title,
-  body,
-  href,
-  Icon,
-  className,
-}: {
-  title: string;
-  body: string;
-  href: string;
-  Icon: typeof GraduationCap;
-  className?: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "focus-ring group flex h-full flex-col justify-between gap-4 rounded-xl bg-white px-5 py-5 shadow-[var(--shadow-md)] transition-colors hover:bg-paper lg:rounded-none lg:shadow-none",
-        className
-      )}
-    >
-      <div className="flex items-center justify-between">
-        <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-navy-950 text-gold-400 transition-colors group-hover:bg-blue-600">
-          <Icon className="h-[18px] w-[18px]" />
-        </span>
-        <ArrowUpRight className="h-4 w-4 text-slate-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-500" />
-      </div>
-      <div>
-        <h3 className="font-display text-base font-semibold text-navy-950">{title}</h3>
-        <p className="mt-1 text-sm text-slate-600">{body}</p>
-      </div>
-    </Link>
   );
 }
