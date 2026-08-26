@@ -107,8 +107,8 @@ function PortalColumn({
         {items.map((item) => {
           const Icon = portalIconMap[item.icon];
           return (
-            <li key={item.label} className="flex items-center gap-2.5 text-sm text-white/50">
-              <Icon className="h-4 w-4 shrink-0 text-gold-500/70" strokeWidth={1.5} />
+            <li key={item.label} className="flex items-start gap-2.5 text-sm text-white/50">
+              <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold-500/70" strokeWidth={1.5} />
               <span>{item.label}</span>
             </li>
           );
@@ -223,16 +223,16 @@ export function Footer() {
 
   return (
     <footer className="relative overflow-hidden border-t border-navy-800 bg-navy-950 text-white/80">
-      <Container className="py-16">
+      <Container className="py-12 sm:py-14 lg:py-16">
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
           variants={stagger}
-          className="grid gap-12 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.1fr] lg:gap-8"
+          className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-x-8 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.1fr] lg:gap-8"
         >
-          {/* Brand column */}
-          <motion.div variants={fadeUp} className="relative max-w-sm lg:pr-4">
+          {/* Brand column — full width on mobile/tablet, first track on desktop */}
+          <motion.div variants={fadeUp} className="relative col-span-2 max-w-sm lg:col-span-1 lg:pr-4">
             <Logo tone="light" />
             <p className="mt-5 text-sm leading-relaxed text-white/60">{footerMission}</p>
 
@@ -240,7 +240,7 @@ export function Footer() {
             <svg
               aria-hidden
               viewBox="0 0 320 120"
-              className="mt-6 h-20 w-full max-w-[280px] text-gold-500/15"
+              className="mt-6 h-16 w-full max-w-[280px] text-gold-500/15 sm:h-20"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
@@ -303,8 +303,9 @@ export function Footer() {
           {/* Teacher portal */}
           <PortalColumn title="Teacher Portal" items={teacherPortalLinks} />
 
-          {/* Get in touch + newsletter */}
-          <motion.div variants={fadeUp}>
+          {/* Get in touch + newsletter — full width on mobile/tablet so the
+              newsletter input never gets squeezed into a half column */}
+          <motion.div variants={fadeUp} className="col-span-2 lg:col-span-1">
             <FooterHeading>Get in Touch</FooterHeading>
             <ul className="mt-5 space-y-3 text-sm text-white/70">
               <li className="flex gap-2.5">
@@ -325,7 +326,7 @@ export function Footer() {
               </li>
             </ul>
 
-            <div className="mt-8">
+            <div className="mt-8 max-w-sm">
               <FooterHeading>{newsletterCopy.heading}</FooterHeading>
               <p className="mt-3 text-sm leading-relaxed text-white/60">
                 {newsletterCopy.description}
@@ -344,7 +345,7 @@ export function Footer() {
             whileInView="show"
             viewport={{ once: true, margin: "-80px" }}
             variants={stagger}
-            className="grid grid-cols-1 divide-y divide-white/10 py-10 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4"
+            className="grid grid-cols-1 divide-y divide-white/10 py-8 sm:grid-cols-2 sm:divide-x sm:divide-y-0 sm:py-10 lg:grid-cols-4"
           >
             {footerFeatureStrip.map((item) => {
               const Icon = featureIconMap[item.icon];
@@ -352,9 +353,9 @@ export function Footer() {
                 <motion.div
                   key={item.title}
                   variants={fadeUp}
-                  className="flex items-start gap-4 px-2 py-5 sm:px-6 sm:py-2 lg:px-8"
+                  className="flex items-start gap-3 px-2 py-4 sm:gap-4 sm:px-6 sm:py-2 lg:px-8"
                 >
-                  <Icon className="h-8 w-8 shrink-0 text-gold-500" strokeWidth={1.25} />
+                  <Icon className="h-7 w-7 shrink-0 text-gold-500 sm:h-8 sm:w-8" strokeWidth={1.25} />
                   <div>
                     <h4 className="font-display text-sm font-semibold uppercase tracking-wide text-white">
                       {item.title}
@@ -370,7 +371,7 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <Container className="flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/40 sm:flex-row">
+        <Container className="flex flex-col items-center justify-between gap-4 py-5 text-center text-xs text-white/40 sm:flex-row sm:py-6 sm:text-left">
           <p>© {year} Nalanda Academy. All rights reserved.</p>
           <nav aria-label="Legal" className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
             {legalLinks.map((item, i) => (
