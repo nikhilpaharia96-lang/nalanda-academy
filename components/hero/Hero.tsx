@@ -41,12 +41,25 @@ export function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden bg-navy-950 pt-[72px]">
-      {/* Cinematic background layer — subtle scale/reveal on load */}
+      {/* Cinematic background layer — slow, continuous Ken Burns drift
+          instead of a one-off zoom, so the photograph always feels alive
+          behind the text. */}
       <motion.div
         aria-hidden
         initial={initial ?? { scale: 1.08, opacity: 0.6 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.4, ease: easing }}
+        animate={
+          shouldReduceMotion
+            ? { scale: 1, opacity: 1 }
+            : { scale: [1.08, 1.14, 1.08], opacity: 1 }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 1.4, ease: easing }
+            : {
+                opacity: { duration: 1.4, ease: easing },
+                scale: { duration: 26, ease: easing, repeat: Infinity },
+              }
+        }
         className="absolute inset-0 -z-20"
       >
         {/* Desktop crop */}
@@ -133,13 +146,18 @@ export function Hero() {
 
       <Container className="relative flex flex-col pb-14 pt-14 sm:pb-16 sm:pt-20 lg:min-h-[720px] lg:justify-center lg:pb-40 lg:pt-24">
         <div className="max-w-xl">
+          {/* Eyebrow — small gold mark + tracked label, replaces the old
+              italic "Welcome to" line with the site's editorial dash motif. */}
           <motion.p
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: easing }}
-            className="mb-4 font-display text-xl italic font-medium tracking-wide text-gold-400 sm:text-2xl"
+            className="mb-5 flex items-center gap-3"
           >
-            Welcome to
+            <span aria-hidden className="h-px w-9 shrink-0 bg-gold-500" />
+            <span className="font-data text-xs font-semibold uppercase tracking-[0.28em] text-gold-400">
+              Welcome to {siteConfig.name}
+            </span>
           </motion.p>
 
           <motion.h1
@@ -148,22 +166,16 @@ export function Hero() {
             transition={{ duration: 0.75, ease: easing, delay: 0.12 }}
             className="font-display text-[34px] font-bold leading-[1.08] tracking-tight text-white sm:text-[44px] md:text-5xl lg:text-6xl xl:text-[4.25rem]"
           >
-            <span className="block">NALANDA ACADEMY</span>
-            <span className="block text-gold-400">NURTURING MINDS.</span>
-            <span className="block text-gold-400">SHAPING FUTURES.</span>
+            <span className="block">{siteConfig.name}</span>
+            <span className="mt-2 block text-[0.42em] font-medium italic leading-snug tracking-normal text-gold-400">
+              {siteConfig.tagline}
+            </span>
           </motion.h1>
-
-          <motion.div
-            initial={initial ?? { opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "4.5rem" }}
-            transition={{ duration: 0.7, ease: easing, delay: 0.4 }}
-            className="mt-6 h-[3px] rounded-full bg-gold-500"
-          />
 
           <motion.p
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easing, delay: 0.52 }}
+            transition={{ duration: 0.6, ease: easing, delay: 0.5 }}
             className="mt-6 max-w-md text-base leading-relaxed text-white/75 sm:text-lg"
           >
             {siteConfig.description}
@@ -244,8 +256,8 @@ function QuickLinkCard({
       )}
     >
       <div className="flex items-center justify-between">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-paper text-navy-950 transition-colors group-hover:bg-navy-950 group-hover:text-gold-400">
-          <Icon className="h-5 w-5" />
+        <span className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-navy-950 text-gold-400 transition-colors group-hover:bg-blue-600">
+          <Icon className="h-[18px] w-[18px]" />
         </span>
         <ArrowUpRight className="h-4 w-4 text-slate-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-gold-500" />
       </div>
