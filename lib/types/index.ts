@@ -5,16 +5,6 @@ export interface Facility {
   description: string;
   imageQuery: string; // used to derive a placeholder image
   isPlaceholder?: boolean;
-  // Optional real photograph. When present, components should render this
-  // instead of the `imageQuery`-derived placeholder. `isDemo: true` marks
-  // it as a temporary/AI-generated presentation visual rather than a
-  // verified photograph of the real campus — replace `image.src` with
-  // official photography when supplied.
-  image?: {
-    src: string;
-    alt: string;
-    isDemo?: boolean;
-  };
 }
 
 export interface FacultyMember {
@@ -24,6 +14,14 @@ export interface FacultyMember {
   subject: string;
   department: string;
   photoAlt: string;
+  /** Path under /public to a portrait image. Omit to fall back to PlaceholderImage. */
+  photoUrl?: string;
+  /**
+   * True when the photo + bio fields are stand-in demo content for design
+   * review, not verified official staff data. Renders a small "Demo Profile"
+   * badge. Set to false (or omit) once real, school-confirmed data is used.
+   */
+  isDemo?: boolean;
   isPlaceholder?: boolean;
 }
 
