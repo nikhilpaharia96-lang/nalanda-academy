@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   type LucideIcon,
   ShieldCheck,
@@ -72,6 +74,8 @@ function RuleHeading({ children }: { children: React.ReactNode }) {
 }
 
 export function FacilitiesSection() {
+  const [campusImageFailed, setCampusImageFailed] = useState(false);
+
   return (
     <section className="bg-paper">
       {/* ================= 1. INTRO / CAMPUS HERO ================= */}
@@ -131,22 +135,44 @@ export function FacilitiesSection() {
               style={{ clipPath: "polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%)" }}
             />
             <div className="absolute inset-3 overflow-hidden rounded-[var(--radius-xl)] lg:inset-0 lg:rounded-none">
-              <div className="h-full w-full lg:hidden">
-                <PlaceholderImage
-                  label={campusHero.imageLabel}
-                  tone="navy"
-                  className="h-full w-full rounded-[var(--radius-xl)] border-0"
-                />
+              <div className="relative h-full w-full lg:hidden">
+                {campusImageFailed ? (
+                  <PlaceholderImage
+                    label={campusHero.image.alt}
+                    tone="navy"
+                    className="h-full w-full rounded-[var(--radius-xl)] border-0"
+                  />
+                ) : (
+                  <Image
+                    src={campusHero.image.src}
+                    alt={campusHero.image.alt}
+                    fill
+                    sizes="100vw"
+                    className="rounded-[var(--radius-xl)] object-cover"
+                    onError={() => setCampusImageFailed(true)}
+                  />
+                )}
               </div>
               <div
-                className="hidden h-full w-full lg:block"
+                className="relative hidden h-full w-full lg:block"
                 style={{ clipPath: "polygon(8.8% 0%, 100% 0%, 100% 100%, 0.8% 100%)" }}
               >
-                <PlaceholderImage
-                  label={campusHero.imageLabel}
-                  tone="navy"
-                  className="h-full w-full rounded-none border-0"
-                />
+                {campusImageFailed ? (
+                  <PlaceholderImage
+                    label={campusHero.image.alt}
+                    tone="navy"
+                    className="h-full w-full rounded-none border-0"
+                  />
+                ) : (
+                  <Image
+                    src={campusHero.image.src}
+                    alt={campusHero.image.alt}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                    onError={() => setCampusImageFailed(true)}
+                  />
+                )}
               </div>
             </div>
 
