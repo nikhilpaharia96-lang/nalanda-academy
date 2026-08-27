@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { aboutPreview, aboutFeatureStrip, aboutVisionMission, aboutGallery } from "@/lib/content/about";
 
 const easing = [0.16, 1, 0.3, 1] as const;
@@ -244,15 +243,15 @@ export function AboutSection() {
 
             {aboutGallery.items.map((item) => (
               <motion.div key={item.title} variants={fadeUp} className="group">
-                <div className="overflow-hidden rounded-[var(--radius-lg)] border border-line shadow-[var(--shadow-sm)] transition-shadow duration-300 ease-out hover:shadow-[var(--shadow-md)]">
-                  <div className="overflow-hidden">
-                    <div className="transition-transform duration-500 ease-out group-hover:scale-[1.04]">
-                      <PlaceholderImage
-                        label={item.label}
-                        tone="paper"
-                        className="aspect-square w-full border-0"
-                      />
-                    </div>
+                <div className="relative overflow-hidden rounded-[var(--radius-lg)] border border-line shadow-[var(--shadow-sm)] transition-shadow duration-300 ease-out hover:shadow-[var(--shadow-md)]">
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      fill
+                      sizes="(min-width: 640px) 22vw, 100vw"
+                      className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                    />
                   </div>
                 </div>
                 <h4 className="mt-3 font-display text-sm font-bold uppercase tracking-wide text-navy-950">
