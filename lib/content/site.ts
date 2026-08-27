@@ -27,22 +27,22 @@ export const heroImage = {
   isDemo: true,
 };
 
+// `primaryNav` drives both the desktop and mobile navigation. "Admission"
+// is deliberately excluded — it renders as the navbar's distinct primary
+// CTA button everywhere instead of a plain text link.
 export const primaryNav = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Academics", href: "/academics" },
   { label: "Facilities", href: "/facilities" },
   { label: "Faculty", href: "/faculty" },
-  { label: "Results", href: "/results" },
   { label: "Events", href: "/events" },
   { label: "Notices", href: "/notices" },
-];
-
-export const footerNav = [
-  ...primaryNav.slice(1),
-  { label: "Admission", href: "/admission" },
+  { label: "Results", href: "/results" },
   { label: "Contact", href: "/contact" },
 ];
+
+export const footerNav = [...primaryNav.slice(1), { label: "Admission", href: "/admission" }];
 
 // ---------------------------------------------------------------------------
 // Footer-specific content. Explore reuses `footerNav`. Student/Teacher
