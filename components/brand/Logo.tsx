@@ -1,9 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-// Text-based logo placeholder. No official mark has been supplied — replace
-// the mark below with a real logo asset (e.g. an <Image>) when available,
-// keeping this component's public API (`tone`, `className`) unchanged.
+// Official Nalanda Academy seal, supplied by the school. Do not redesign,
+// recolor, or replace this artwork — if a refreshed version of the same
+// mark is ever issued, swap the file at this path (same filename) and
+// nothing else needs to change.
+const LOGO_SRC = "/images/brand/nalanda-academy-logo.webp";
+
 export function Logo({
   className,
   tone = "dark",
@@ -14,36 +18,24 @@ export function Logo({
   return (
     <Link
       href="/"
-      className={cn("focus-ring group flex items-center gap-2.5 rounded-sm", className)}
+      className={cn("focus-ring group flex min-w-0 items-center gap-2.5 rounded-sm", className)}
       aria-label="Nalanda Academy — Home"
     >
+      <Image
+        src={LOGO_SRC}
+        alt="Nalanda Academy"
+        width={96}
+        height={96}
+        priority
+        className="h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10"
+      />
       <span
         className={cn(
-          "flex h-9 w-9 shrink-0 items-center justify-center rounded-[6px] border font-display text-sm font-bold",
-          tone === "dark"
-            ? "border-navy-950/15 bg-navy-950 text-gold-400"
-            : "border-white/25 bg-white/10 text-gold-400 backdrop-blur-sm"
+          "truncate font-display text-[15px] font-semibold leading-tight tracking-tight sm:text-base",
+          tone === "dark" ? "text-navy-950" : "text-white"
         )}
       >
-        N
-      </span>
-      <span className="flex flex-col leading-none">
-        <span
-          className={cn(
-            "font-display text-[15px] font-semibold tracking-tight",
-            tone === "dark" ? "text-navy-950" : "text-white"
-          )}
-        >
-          Nalanda Academy
-        </span>
-        <span
-          className={cn(
-            "font-data text-[10px] uppercase tracking-[0.18em]",
-            tone === "dark" ? "text-slate-400" : "text-white/60"
-          )}
-        >
-          Est. — Placeholder
-        </span>
+        Nalanda Academy
       </span>
     </Link>
   );
