@@ -65,9 +65,9 @@ export const aboutVisionMission = {
   },
 };
 
-// Gallery imagery for the homepage About section. `isDemo`/placeholder
-// entries render via PlaceholderImage until real, approved photography is
-// supplied — no fabricated campus/student photos are used.
+// Gallery imagery for the homepage About section. Real, verified photographs
+// of Nalanda Academy students and staff (school uniforms, ID cards, and
+// campus visible in the source images) — not stock or AI-generated.
 export const aboutGallery = {
   main: {
     src: aboutPreview.image.src,
@@ -78,22 +78,31 @@ export const aboutGallery = {
   },
   items: [
     {
-      label: "Science laboratory placeholder — replace with official imagery",
-      title: "Innovation",
-      body: "Encouraging curiosity and creativity.",
-      isPlaceholder: true,
+      src: "/images/about/nalanda-about-innovation.webp",
+      width: 1200,
+      height: 1200,
+      alt: "Nalanda Academy students forming a heart shape with their hands together",
+      title: "Togetherness",
+      body: "Friendships and teamwork built beyond the classroom.",
+      isPlaceholder: false,
     },
     {
-      label: "School sports field placeholder — replace with official imagery",
-      title: "Excellence",
-      body: "Striving for excellence in every pursuit.",
-      isPlaceholder: true,
+      src: "/images/about/nalanda-about-excellence.webp",
+      width: 1200,
+      height: 1200,
+      alt: "Nalanda Academy students and staff on an educational excursion",
+      title: "Exploration",
+      body: "Learning journeys that take students beyond the campus.",
+      isPlaceholder: false,
     },
     {
-      label: "Student art class placeholder — replace with official imagery",
+      src: "/images/about/nalanda-about-character.webp",
+      width: 1200,
+      height: 1200,
+      alt: "Nalanda Academy students celebrating a national day with the Indian flag",
       title: "Character",
       body: "Nurturing values, empathy and integrity.",
-      isPlaceholder: true,
+      isPlaceholder: false,
     },
   ],
 };
