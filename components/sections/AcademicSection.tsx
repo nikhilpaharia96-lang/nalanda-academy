@@ -264,7 +264,7 @@ export function AcademicSection() {
               </h2>
             </motion.div>
 
-            <div className="mt-9 grid grid-cols-2 gap-x-6 gap-y-9">
+            <div className="mt-9 grid grid-cols-1 gap-x-6 gap-y-7 sm:grid-cols-2 sm:gap-y-9">
               {learningApproach.items.map((item) => {
                 const Icon = iconMap[item.icon];
                 return (
