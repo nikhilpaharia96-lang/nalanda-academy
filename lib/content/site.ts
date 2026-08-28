@@ -27,6 +27,45 @@ export const heroImage = {
   isDemo: true,
 };
 
+// Floating "years of excellence" badge shown over the hero campus
+// photograph. No official founding year / figure has been confirmed yet —
+// following the same convention as `academicStats` in
+// `lib/content/academics.ts`, the value is shown as "—" rather than an
+// invented number. Replace `value` once the school confirms an official
+// figure.
+export const heroAchievement = {
+  icon: "graduation-cap" as const,
+  value: "—",
+  label: "Years",
+  caption: "Excellence in Education",
+};
+
+// Four value-proposition cards in the floating strip at the bottom of the
+// homepage hero. General, defensible statements only — no numeric or
+// accreditation claims.
+export const heroFeatureStrip = [
+  {
+    icon: "book-open" as const,
+    title: "Quality Education",
+    body: "Academic excellence and holistic development.",
+  },
+  {
+    icon: "users-round" as const,
+    title: "Experienced Faculty",
+    body: "Dedicated educators and mentors.",
+  },
+  {
+    icon: "building-2" as const,
+    title: "Modern Infrastructure",
+    body: "A safe and engaging learning environment.",
+  },
+  {
+    icon: "sparkles" as const,
+    title: "Holistic Development",
+    body: "Academics, creativity, sports and leadership.",
+  },
+];
+
 // `primaryNav` drives both the desktop and mobile navigation. "Admission"
 // is deliberately excluded — it renders as the navbar's distinct primary
 // CTA button everywhere instead of a plain text link.
