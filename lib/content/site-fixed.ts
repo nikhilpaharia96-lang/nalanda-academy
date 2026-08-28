@@ -1,0 +1,224 @@
+export const siteConfig = {
+  name: "Nalanda Academy",
+  shortName: "Nalanda",
+  tagline: "Building Knowledge. Inspiring Excellence. Shaping Futures.",
+  description:
+    "Nalanda Academy is a modern learning environment focused on academic excellence, character development and preparing students for a changing world.",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.nalandaacademy.example",
+};
+
+// Hero background imagery. `isDemo: true` marks these as temporary
+// presentation visuals, not verified photographs of the real Nalanda
+// Academy campus — swap the files at the paths below (keeping the same
+// filenames/paths) once official campus photography is supplied, and this
+// object is the only thing that ever needs to change.
+export const heroImage = {
+  desktop: {
+    src: "/images/hero/nalanda-campus-hero-desktop.webp",
+    width: 1920,
+    height: 1073,
+  },
+  mobile: {
+    src: "/images/hero/nalanda-campus-hero-mobile.webp",
+    width: 959,
+    height: 1192,
+  },
+  alt: "Nalanda Academy campus — demo visual, not an official campus photograph",
+  isDemo: true,
+};
+
+// Single floating stat badge shown over the hero photograph. `value` is a
+// deliberate "—" placeholder — matching the same convention already used
+// for every other stat strip in this project (see `academics.ts`) — and
+// must never be filled with an invented number. Only the category label
+// and caption are editorial copy; the figure itself waits for a real,
+// verified number.
+export const heroAchievement = {
+  value: "—",
+  label: "Years of Excellence",
+  caption: "[Official figure to be added]",
+};
+
+// Four-item feature strip shown with the hero (2x2 grid on mobile, a
+// floating strip docked over the hero photo on desktop). Icon keys must
+// match the `featureIconMap` in components/hero/Hero.tsx exactly:
+// "book-open", "users-round", "building-2", "sparkles".
+export const heroFeatureStrip = [
+  {
+    icon: "book-open" as const,
+    title: "Concept-Driven Learning",
+    body: "Understanding over rote memorization.",
+  },
+  {
+    icon: "users-round" as const,
+    title: "Experienced Faculty",
+    body: "Mentors who inspire and guide every learner.",
+  },
+  {
+    icon: "building-2" as const,
+    title: "Modern Campus",
+    body: "Safe, well-equipped spaces built for growth.",
+  },
+  {
+    icon: "sparkles" as const,
+    title: "Holistic Development",
+    body: "Academics, character and life skills together.",
+  },
+];
+
+// `primaryNav` drives both the desktop and mobile navigation. "Admission"
+// is deliberately excluded — it renders as the navbar's distinct primary
+// CTA button everywhere instead of a plain text link.
+export const primaryNav = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Academics", href: "/academics" },
+  { label: "Facilities", href: "/facilities" },
+  { label: "Faculty", href: "/faculty" },
+  { label: "Events", href: "/events" },
+  { label: "Notices", href: "/notices" },
+  { label: "Results", href: "/results" },
+  { label: "Contact", href: "/contact" },
+];
+
+export const footerNav = [...primaryNav.slice(1), { label: "Admission", href: "/admission" }];
+
+// ---------------------------------------------------------------------------
+// Footer-specific content. Explore reuses `footerNav`. Student/Teacher
+// Portal links point to areas that don't exist in this project yet (no
+// /student or /teacher routes) — they render as labeled, non-broken
+// "Coming Soon" items rather than linking anywhere or being left off
+// entirely, so the footer doesn't imply a portal that isn't real.
+// ---------------------------------------------------------------------------
+
+export const exploreLinks = footerNav;
+
+export const studentPortalLinks = [
+  { label: "Dashboard", icon: "layout-dashboard" as const },
+  { label: "Attendance", icon: "calendar-check" as const },
+  { label: "Fees & Payments", icon: "credit-card" as const },
+  { label: "Results", icon: "bar-chart-3" as const },
+  { label: "Notices", icon: "bell" as const },
+  { label: "Documents", icon: "file-text" as const },
+  { label: "Events", icon: "calendar-days" as const },
+  { label: "Profile & Settings", icon: "user-cog" as const },
+];
+
+export const teacherPortalLinks = [
+  { label: "Dashboard", icon: "layout-dashboard" as const },
+  { label: "My Classes", icon: "presentation" as const },
+  { label: "Students", icon: "users" as const },
+  { label: "Attendance", icon: "calendar-check" as const },
+  { label: "Results", icon: "bar-chart-3" as const },
+  { label: "Notices", icon: "bell" as const },
+  { label: "Events", icon: "calendar-days" as const },
+  { label: "Profile & Settings", icon: "user-cog" as const },
+];
+
+export const footerFeatureStrip = [
+  {
+    icon: "graduation-cap" as const,
+    title: "Quality Education",
+    body: "Committed to academic excellence and holistic development.",
+  },
+  {
+    icon: "users-round" as const,
+    title: "Strong Community",
+    body: "Collaborating with parents and community for a better future.",
+  },
+  {
+    icon: "shield-check" as const,
+    title: "Safe & Supportive",
+    body: "A secure and nurturing environment for every learner.",
+  },
+  {
+    icon: "trophy" as const,
+    title: "Inspire & Empower",
+    body: "Encouraging creativity, confidence and character to achieve greatness.",
+  },
+];
+
+export const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Use", href: "/terms-of-use" },
+  { label: "Refund Policy", href: "/refund-policy" },
+];
+
+export const newsletterCopy = {
+  heading: "Newsletter",
+  description: "Stay updated with the latest news, events and important announcements.",
+  placeholder: "Enter your email address",
+};
+
+export const footerMission =
+  "Empowering minds. Inspiring excellence. Building a brighter future together.";
+
+// Placeholder contact details — replace with official information.
+export const contactInfo = {
+  address: "[Official school address to be added]",
+  phone: "[Official phone number to be added]",
+  email: "[Official email to be added]",
+  officeHours: "[Official office hours to be added]",
+  mapEmbedUrl: process.env.NEXT_PUBLIC_GOOGLE_MAPS_URL ?? "",
+};
+
+// Only rendered when a real handle is configured — no accounts are invented.
+export const socialLinks = {
+  instagram: process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM ?? "",
+  facebook: process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK ?? "",
+  youtube: process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE ?? "",
+};
+
+export const PLACEHOLDER = "[Official information to be added]";
+
+// ---------------------------------------------------------------------------
+// Homepage "Get in Touch" editorial section — presentation-only copy. All
+// contact details are read from `contactInfo`/`socialLinks` above, never
+// duplicated or invented here.
+// ---------------------------------------------------------------------------
+
+export const getInTouchHero = {
+  eyebrowIndex: "08",
+  eyebrow: "Get in Touch",
+  heading: ["We Are Here", "For You."],
+  headingAccent: "You.",
+  description:
+    "Have a question, need information, or want to learn more about Nalanda Academy? We would love to hear from you.",
+  // `isDemo: true` marks this as a temporary presentation visual — an
+  // AI-generated concept image, NOT a verified photograph of the real
+  // Nalanda Academy campus. Replace `image.src` with official, approved
+  // campus photography when supplied — no component changes needed.
+  image: {
+    src: "/images/contact/get-in-touch.webp",
+    alt: "Students walking along a landscaped campus pathway toward the main building — AI-generated concept visual, not an official Nalanda Academy photograph",
+    isDemo: true,
+  },
+  card: {
+    title: ["We'd Love to Hear", "From You"],
+    body: "Whether you are a parent, student, visitor or well-wisher, our team is ready to assist you.",
+    cta: { label: "Send Us a Message", href: "#get-in-touch-form" },
+  },
+};
+
+export const getInTouchValueStrip = [
+  {
+    icon: "users-round" as const,
+    title: "Supportive Community",
+    body: "We are committed to supporting our students and parents.",
+  },
+  {
+    icon: "school" as const,
+    title: "Personal Attention",
+    body: "Every inquiry is important and we respond with care.",
+  },
+  {
+    icon: "shield-check" as const,
+    title: "Safe & Welcoming",
+    body: "Our campus is safe, inclusive and welcoming for all.",
+  },
+  {
+    icon: "handshake" as const,
+    title: "Together We Grow",
+    body: "Partnering with parents to nurture confident and responsible learners.",
+  },
+];
