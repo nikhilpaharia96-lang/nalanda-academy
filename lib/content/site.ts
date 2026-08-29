@@ -27,42 +27,42 @@ export const heroImage = {
   isDemo: true,
 };
 
-// Single floating stat badge shown over the hero photograph. `value` is a
-// deliberate "—" placeholder — matching the same convention already used
-// for every other stat strip in this project (see `academics.ts`) — and
-// must never be filled with an invented number. Only the category label
-// and caption are editorial copy; the figure itself waits for a real,
-// verified number.
+// Floating "years of excellence" badge shown over the hero campus
+// photograph. No official founding year / figure has been confirmed yet —
+// following the same convention as `academicStats` in
+// `lib/content/academics.ts`, the value is shown as "—" rather than an
+// invented number. Replace `value` once the school confirms an official
+// figure.
 export const heroAchievement = {
+  icon: "graduation-cap" as const,
   value: "—",
-  label: "Years of Excellence",
-  caption: "[Official figure to be added]",
+  label: "Years",
+  caption: "Excellence in Education",
 };
 
-// Four-item feature strip shown with the hero (2x2 grid on mobile, a
-// floating strip docked over the hero photo on desktop). Icon keys must
-// match the `featureIconMap` in components/hero/Hero.tsx exactly:
-// "book-open", "users-round", "building-2", "sparkles".
+// Four value-proposition cards in the floating strip at the bottom of the
+// homepage hero. General, defensible statements only — no numeric or
+// accreditation claims.
 export const heroFeatureStrip = [
   {
     icon: "book-open" as const,
-    title: "Concept-Driven Learning",
-    body: "Understanding over rote memorization.",
+    title: "Quality Education",
+    body: "Academic excellence and holistic development.",
   },
   {
     icon: "users-round" as const,
     title: "Experienced Faculty",
-    body: "Mentors who inspire and guide every learner.",
+    body: "Dedicated educators and mentors.",
   },
   {
     icon: "building-2" as const,
-    title: "Modern Campus",
-    body: "Safe, well-equipped spaces built for growth.",
+    title: "Modern Infrastructure",
+    body: "A safe and engaging learning environment.",
   },
   {
     icon: "sparkles" as const,
     title: "Holistic Development",
-    body: "Academics, character and life skills together.",
+    body: "Academics, creativity, sports and leadership.",
   },
 ];
 
@@ -184,15 +184,7 @@ export const getInTouchHero = {
   headingAccent: "You.",
   description:
     "Have a question, need information, or want to learn more about Nalanda Academy? We would love to hear from you.",
-  // `isDemo: true` marks this as a temporary presentation visual — an
-  // AI-generated concept image, NOT a verified photograph of the real
-  // Nalanda Academy campus. Replace `image.src` with official, approved
-  // campus photography when supplied — no component changes needed.
-  image: {
-    src: "/images/contact/get-in-touch.webp",
-    alt: "Students walking along a landscaped campus pathway toward the main building — AI-generated concept visual, not an official Nalanda Academy photograph",
-    isDemo: true,
-  },
+  imageLabel: "Campus photography placeholder — replace with official imagery",
   card: {
     title: ["We'd Love to Hear", "From You"],
     body: "Whether you are a parent, student, visitor or well-wisher, our team is ready to assist you.",
