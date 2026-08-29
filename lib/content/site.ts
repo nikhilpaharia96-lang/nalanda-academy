@@ -185,6 +185,14 @@ export const getInTouchHero = {
   description:
     "Have a question, need information, or want to learn more about Nalanda Academy? We would love to hear from you.",
   imageLabel: "Campus photography placeholder — replace with official imagery",
+  image: {
+    // Reuses the same demo campus photograph as the homepage hero until an
+    // official image is supplied — see the README in
+    // public/images/hero/ for replacement specs. Falls back to the
+    // labeled placeholder automatically if the file is ever missing.
+    src: "/images/hero/nalanda-campus-hero-desktop.webp",
+    alt: "Campus photography placeholder — replace with official imagery",
+  },
   card: {
     title: ["We'd Love to Hear", "From You"],
     body: "Whether you are a parent, student, visitor or well-wisher, our team is ready to assist you.",
