@@ -1,26 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  GraduationCap,
   BookOpen,
   UsersRound,
   Building2,
   Sparkles,
-  Wheat,
   ArrowRight,
+  ArrowLeft,
+  Quote,
   type LucideIcon,
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { Button } from "@/components/ui/Button";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { PlaceholderImage } from "@/components/ui/PlaceholderImage";
 import { FadeUp, StaggerGroup } from "@/components/motion/Reveal";
-import { siteConfig, heroImage, heroAchievement, heroFeatureStrip } from "@/lib/content/site";
+import {
+  siteConfig,
+  heroCarousel,
+  heroWelcome,
+  heroQuote,
+  heroFeatureStrip,
+} from "@/lib/content/site";
 
 const easing = [0.16, 1, 0.3, 1] as const;
+const SLIDE_DURATION_MS = 6000;
 
 const featureIconMap: Record<string, LucideIcon> = {
   "book-open": BookOpen,
@@ -31,180 +35,227 @@ const featureIconMap: Record<string, LucideIcon> = {
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
-  const [desktopImageFailed, setDesktopImageFailed] = useState(false);
-  const [mobileImageFailed, setMobileImageFailed] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const slideCount = heroCarousel.length;
 
-  // When reduced motion is preferred, render content in its final state
-  // immediately instead of animating in.
+  const goTo = useCallback(
+    (next: number) => {
+      setIndex(((next % slideCount) + slideCount) % slideCount);
+    },
+    [slideCount]
+  );
+
+  const goNext = useCallback(() => goTo(index + 1), [goTo, index]);
+  const goPrev = useCallback(() => goTo(index - 1), [goTo, index]);
+
+  // Autoplay — advances every SLIDE_DURATION_MS, pauses on hover/touch and
+  // is skipped entirely for reduced-motion users.
+  useEffect(() => {
+    if (paused || shouldReduceMotion || slideCount <= 1) return;
+    const id = setInterval(() => {
+      setIndex((current) => (current + 1) % slideCount);
+    }, SLIDE_DURATION_MS);
+    return () => clearInterval(id);
+  }, [paused, shouldReduceMotion, slideCount]);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > 40) {
+      if (delta < 0) goNext();
+      else goPrev();
+    }
+    touchStartX.current = null;
+  };
+
   const initial = shouldReduceMotion ? false : undefined;
 
   return (
-    <section className="relative isolate bg-paper pt-[72px]">
-      {/* Quiet dot-grid texture, consistent with the site's editorial mark */}
+    <section
+      className="relative isolate overflow-hidden bg-navy-950 pt-[72px] lg:pt-[108px]"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      aria-roledescription="carousel"
+      aria-label="Nalanda Academy campus"
+    >
+      {/* Background image carousel */}
+      <div className="absolute inset-0 -z-20">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={index}
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1, ease: easing }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={heroCarousel[index].src}
+              alt={heroCarousel[index].alt}
+              fill
+              priority={index === 0}
+              sizes="100vw"
+              className="object-cover"
+            />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Dark navy gradient overlay — strong from the left, transparent
+          toward the right, so hero copy stays readable while the campus
+          photograph remains visible on the right side of the frame. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #0a1a33 1px, transparent 1px), linear-gradient(to bottom, #0a1a33 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
+        className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,rgba(10,26,51,0.97)_0%,rgba(10,26,51,0.93)_28%,rgba(10,26,51,0.72)_48%,rgba(10,26,51,0.32)_68%,rgba(10,26,51,0.08)_85%)]"
+      />
+      {/* Soft bottom fade so the floating feature strip reads cleanly
+          against the image regardless of which slide is showing. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-navy-950/80 to-transparent"
       />
 
-      <Container className="relative flex flex-col gap-12 pb-10 pt-14 sm:pb-14 sm:pt-20 lg:grid lg:grid-cols-2 lg:items-center lg:gap-10 lg:pb-56 lg:pt-16 xl:gap-16">
-        {/* LEFT — copy */}
-        <div className="order-1 max-w-xl">
-          <motion.div
-            initial={initial ?? { opacity: 0, y: 14 }}
+      <Container className="relative flex min-h-[560px] flex-col justify-center gap-10 pb-40 pt-16 sm:min-h-[620px] sm:pb-48 lg:min-h-0 lg:py-24 lg:pb-[168px]">
+        <div className="max-w-xl">
+          <motion.p
+            initial={initial ?? { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: easing }}
+            className="font-script text-4xl leading-none text-gold-400 sm:text-5xl"
           >
-            <Eyebrow index="01">{siteConfig.name}</Eyebrow>
-          </motion.div>
+            {heroWelcome}
+          </motion.p>
 
           <motion.h1
             initial={initial ?? { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: easing, delay: 0.12 }}
-            className="font-editorial mt-5 text-[42px] font-semibold leading-[1.08] tracking-tight text-navy-950 sm:text-[52px] lg:text-[3.75rem] xl:text-[4.25rem]"
+            className="font-editorial mt-4 text-[46px] font-bold uppercase leading-[1.02] tracking-tight text-white sm:text-[64px] lg:text-[76px]"
           >
-            <span className="block">Empowering Minds.</span>
-            <span className="block text-gold-500">Inspiring Excellence.</span>
+            <span className="block">Nalanda</span>
+            <span className="block text-gold-400">Academy</span>
           </motion.h1>
-
-          <motion.div
-            initial={initial ?? { opacity: 0, width: 0 }}
-            animate={{ opacity: 1, width: "auto" }}
-            transition={{ duration: 0.7, ease: easing, delay: 0.4 }}
-            className="mt-6 flex items-center gap-3 overflow-hidden"
-          >
-            <span aria-hidden className="h-[3px] w-16 shrink-0 rounded-full bg-gold-500" />
-            <Wheat aria-hidden className="h-4 w-4 shrink-0 text-gold-500" strokeWidth={1.5} />
-          </motion.div>
 
           <motion.p
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easing, delay: 0.52 }}
-            className="mt-6 max-w-md text-base leading-relaxed text-slate-600 sm:text-lg"
+            transition={{ duration: 0.6, ease: easing, delay: 0.3 }}
+            className="mt-6 max-w-md text-base leading-relaxed text-white/80 sm:text-lg"
           >
             {siteConfig.description}
           </motion.p>
 
+          {/* Quote card */}
           <motion.div
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: easing, delay: 0.66 }}
-            className="mt-9 flex flex-wrap gap-3 sm:gap-4"
+            transition={{ duration: 0.6, ease: easing, delay: 0.42 }}
+            className="relative mt-7 max-w-md overflow-hidden rounded-xl border border-gold-400/40 bg-navy-950/40 px-5 py-4 backdrop-blur-sm sm:px-6 sm:py-5"
           >
-            <Button href="/about" variant="primary">
-              <span className="flex items-center gap-3">
-                Explore Academy
-                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/40 transition-colors group-hover:border-white group-hover:bg-white/10">
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                </span>
-              </span>
-            </Button>
-            <Button
-              href="/admission"
-              variant="secondary"
-              className="border-gold-500/50 hover:border-gold-500"
-            >
-              <span className="flex items-center gap-3">
-                Admissions
-                <span className="flex h-7 w-7 items-center justify-center rounded-full border border-gold-500/60 text-gold-600 transition-colors group-hover:border-gold-500 group-hover:bg-gold-500 group-hover:text-white">
-                  <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                </span>
-              </span>
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* RIGHT — campus visual */}
-        <div className="relative order-2 mx-auto w-full max-w-[420px] sm:max-w-[480px] lg:max-w-none lg:h-full">
-          {/* Gold trace, hugging the curved left edge behind the photo */}
-          <div
-            aria-hidden
-            className="absolute -inset-y-3 -left-3 right-0 rounded-l-[130px] rounded-r-2xl border-y-2 border-l-2 border-gold-500/60 sm:-inset-y-4 sm:-left-4 sm:rounded-l-[160px] lg:-inset-y-5 lg:-left-5 lg:rounded-l-[190px]"
-          />
-
-          <motion.div
-            initial={initial ?? { opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, ease: easing, delay: 0.15 }}
-            className="relative aspect-[4/5] w-full overflow-hidden rounded-l-[120px] rounded-r-2xl border-[3px] border-navy-950 shadow-[var(--shadow-lg)] sm:aspect-[3/4] sm:rounded-l-[150px] lg:aspect-auto lg:h-full lg:min-h-[480px] lg:rounded-l-[180px] xl:min-h-[540px]"
-          >
-            {/* Desktop crop */}
-            <div className="hidden h-full w-full lg:block">
-              {desktopImageFailed ? (
-                <PlaceholderImage
-                  label="Campus photography placeholder (desktop) — replace with official imagery"
-                  tone="navy"
-                  className="h-full w-full rounded-none border-0"
-                />
-              ) : (
-                <Image
-                  src={heroImage.desktop.src}
-                  alt={heroImage.alt}
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 46vw, 100vw"
-                  className="object-cover"
-                  onError={() => setDesktopImageFailed(true)}
-                />
-              )}
-            </div>
-
-            {/* Mobile / tablet crop */}
-            <div className="h-full w-full lg:hidden">
-              {mobileImageFailed ? (
-                <PlaceholderImage
-                  label="Campus photography placeholder (mobile) — replace with official imagery"
-                  tone="navy"
-                  className="h-full w-full rounded-none border-0"
-                />
-              ) : (
-                <Image
-                  src={heroImage.mobile.src}
-                  alt={heroImage.alt}
-                  fill
-                  priority
-                  sizes="100vw"
-                  className="object-cover"
-                  onError={() => setMobileImageFailed(true)}
-                />
-              )}
-            </div>
-          </motion.div>
-
-          {/* Floating achievement badge */}
-          <motion.div
-            initial={initial ?? { opacity: 0, y: 18, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, ease: easing, delay: 0.7 }}
-            className="absolute right-4 top-5 z-10 w-[112px] rounded-2xl bg-navy-950 px-4 py-4 text-center shadow-[var(--shadow-lg)] sm:right-6 sm:top-7 sm:w-[130px] sm:px-5 sm:py-5 lg:right-8 lg:top-9 lg:w-[144px]"
-          >
-            <GraduationCap
+            <span
               aria-hidden
-              className="mx-auto h-6 w-6 text-gold-400 sm:h-7 sm:w-7"
+              className="absolute -left-1 -top-1 h-10 w-10 rounded-br-xl border-b border-r border-gold-400/30"
+            />
+            <Quote
+              aria-hidden
+              className="h-6 w-6 shrink-0 fill-gold-400/20 text-gold-400/70"
               strokeWidth={1.5}
             />
-            <p className="mt-2 font-display text-xl font-bold leading-none text-white sm:text-2xl">
-              {heroAchievement.value}
+            <p className="mt-2 text-[15px] italic leading-relaxed text-white/90 sm:text-base">
+              {heroQuote.lines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </p>
-            <p className="font-display text-xs font-semibold text-white/90 sm:text-sm">
-              {heroAchievement.label}
-            </p>
-            <p className="mt-1 text-[10px] leading-snug text-white/60 sm:text-[11px]">
-              {heroAchievement.caption}
-            </p>
+            <span
+              aria-hidden
+              className="mt-3 flex items-center gap-2 text-gold-400/70"
+            >
+              <span className="h-px flex-1 bg-gold-400/30" />
+              <Sparkles className="h-3 w-3" strokeWidth={1.5} />
+              <span className="h-px flex-1 bg-gold-400/30" />
+            </span>
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={initial ?? { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: easing, delay: 0.54 }}
+            className="mt-8 flex flex-wrap gap-3 sm:gap-4"
+          >
+            <a
+              href="/about"
+              className="focus-ring group inline-flex items-center gap-3 rounded-[var(--radius-md)] bg-gold-500 px-6 py-3 text-sm font-semibold text-navy-950 shadow-[var(--shadow-md)] transition-all duration-200 ease-out hover:bg-gold-400 active:scale-[0.98]"
+            >
+              Explore Academy
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy-950/15 transition-transform duration-200 group-hover:translate-x-0.5">
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
+            </a>
+            <a
+              href="/admission"
+              className="focus-ring group inline-flex items-center gap-3 rounded-[var(--radius-md)] border border-white/40 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 ease-out hover:border-gold-400 hover:bg-white/10 active:scale-[0.98]"
+            >
+              Admissions
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/30 transition-colors duration-200 group-hover:border-gold-400 group-hover:text-gold-400">
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+              </span>
+            </a>
           </motion.div>
         </div>
       </Container>
 
-      {/* Mobile / tablet: feature strip stays in normal document flow,
-          directly after the campus image + achievement badge. */}
-      <Container className="relative pb-14 sm:pb-16 lg:hidden">
+      {/* Prev / next arrows, layered directly over the hero image */}
+      {slideCount > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={goPrev}
+            aria-label="Previous slide"
+            className="focus-ring group absolute left-4 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-navy-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:border-gold-400 hover:text-gold-400 sm:flex lg:left-8"
+          >
+            <ArrowLeft className="h-5 w-5" aria-hidden />
+          </button>
+          <button
+            type="button"
+            onClick={goNext}
+            aria-label="Next slide"
+            className="focus-ring group absolute right-4 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-navy-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:border-gold-400 hover:text-gold-400 sm:flex lg:right-8"
+          >
+            <ArrowRight className="h-5 w-5" aria-hidden />
+          </button>
+        </>
+      )}
+
+      {/* Slide indicators */}
+      {slideCount > 1 && (
+        <div className="absolute inset-x-0 z-10 flex justify-center gap-2 bottom-[168px] sm:bottom-[188px] lg:bottom-[148px]">
+          {heroCarousel.map((slide, i) => (
+            <button
+              key={slide.src}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              aria-current={i === index}
+              className={`focus-ring h-1.5 rounded-full transition-all duration-300 ${
+                i === index ? "w-7 bg-gold-400" : "w-1.5 bg-white/50 hover:bg-white/75"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Mobile / tablet: feature strip stays in normal document flow */}
+      <Container className="relative pb-12 lg:hidden">
         <StaggerGroup className="grid grid-cols-2 gap-x-4 gap-y-6 rounded-2xl border border-line bg-white p-5 shadow-[var(--shadow-md)] sm:gap-x-6 sm:p-6">
           {heroFeatureStrip.map((item) => (
             <FeatureCard key={item.title} {...item} />
@@ -214,7 +265,7 @@ export function Hero() {
 
       {/* Desktop: premium floating strip, docked near the bottom of the
           hero and overlapping the campus visual above it. */}
-      <StaggerGroup className="absolute inset-x-0 bottom-28 z-10 hidden lg:block">
+      <StaggerGroup className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-1/2 lg:block">
         <Container>
           <div className="grid w-full grid-cols-4 divide-x divide-line overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-lg)]">
             {heroFeatureStrip.map((item) => (
