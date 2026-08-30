@@ -112,6 +112,13 @@ h1, h2, h3, h4, .font-display {
   letter-spacing: -0.01em;
 }
 
+/* Handwritten script accent, reserved for the small "Welcome to" eyebrow
+   above the homepage hero headline — loaded via the same stylesheet link
+   as --font-editorial in app/layout.tsx. */
+.font-script {
+  font-family: "Great Vibes", "Brush Script MT", cursive;
+}
+
 ::selection {
   background: var(--color-gold-100);
   color: var(--color-navy-950);
