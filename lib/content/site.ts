@@ -7,37 +7,47 @@ export const siteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.nalandaacademy.example",
 };
 
-// Hero background imagery. `isDemo: true` marks these as temporary
-// presentation visuals, not verified photographs of the real Nalanda
-// Academy campus — swap the files at the paths below (keeping the same
-// filenames/paths) once official campus photography is supplied, and this
-// object is the only thing that ever needs to change.
-export const heroImage = {
-  desktop: {
-    src: "/images/hero/nalanda-campus-hero-desktop.webp",
-    width: 1920,
-    height: 1073,
+// Homepage hero background carousel. These are real, unretouched Nalanda
+// Academy photographs (assemblies, excursions, sports day, the campus
+// building) sourced from public/images/hero/*.jpg and re-encoded as .webp
+// crops in public/images/hero/carousel/. Data-driven on purpose — to add or
+// swap a slide, just add/replace a file in that folder and add a row here;
+// nothing in the Hero component itself needs to change.
+export const heroCarousel = [
+  {
+    src: "/images/hero/carousel/campus-1.webp",
+    alt: "Nalanda Academy students, staff and families gathered outside the academy building",
   },
-  mobile: {
-    src: "/images/hero/nalanda-campus-hero-mobile.webp",
-    width: 959,
-    height: 1192,
+  {
+    src: "/images/hero/carousel/campus-2.webp",
+    alt: "Nalanda Academy students lined up for the morning assembly",
   },
-  alt: "Nalanda Academy campus — demo visual, not an official campus photograph",
-  isDemo: true,
-};
+  {
+    src: "/images/hero/carousel/campus-3.webp",
+    alt: "Nalanda Academy staff and students on an academy excursion",
+  },
+  {
+    src: "/images/hero/carousel/campus-4.webp",
+    alt: "Nalanda Academy students at a sports day event",
+  },
+  {
+    src: "/images/hero/carousel/campus-5.webp",
+    alt: "Nalanda Academy students with their bicycles outside the academy gate",
+  },
+];
 
-// Floating "years of excellence" badge shown over the hero campus
-// photograph. No official founding year / figure has been confirmed yet —
-// following the same convention as `academicStats` in
-// `lib/content/academics.ts`, the value is shown as "—" rather than an
-// invented number. Replace `value` once the school confirms an official
-// figure.
-export const heroAchievement = {
-  icon: "graduation-cap" as const,
-  value: "—",
-  label: "Years",
-  caption: "Excellence in Education",
+// Small handwritten-style eyebrow shown above the "NALANDA ACADEMY"
+// headline in the homepage hero.
+export const heroWelcome = "Welcome to Handique";
+
+// Short Hindi/Hinglish educational-philosophy line shown in the quote card
+// on the homepage hero. Presentation copy only — not attributed to any
+// person, so no source needs to be cited.
+export const heroQuote = {
+  lines: [
+    "Shiksha sirf kitaabon tak seemit nahi,",
+    "balki jeevan ko sahi disha dene ka maarg hai.",
+  ],
 };
 
 // Four value-proposition cards in the floating strip at the bottom of the
