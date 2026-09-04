@@ -12,13 +12,12 @@ const items = [
 
 export function QuickAccess() {
   return (
-    // Floats a compact tile grid up over the navy hero above it — same
-    // icon-swatch language as the hero — then settles into the page's
-    // paper background. Laid out 2-up from the smallest breakpoint (not a
-    // tall single-column stack) with tighter padding/type so it stays
-    // compact and easy to scan on phones.
-    <section className="relative z-10 bg-paper pb-10 pt-0 sm:pb-14 lg:pb-16">
-      <Container className="-mt-8 sm:-mt-12 lg:-mt-16">
+    // Settles into the page's paper background directly below the hero,
+    // with a light lift so it still feels connected to it. Laid out 2-up
+    // from the smallest breakpoint (not a tall single-column stack) with
+    // tighter padding/type so it stays compact and easy to scan on phones.
+    <section className="relative z-10 bg-paper pb-10 pt-8 sm:pb-14 sm:pt-10 lg:pb-16 lg:pt-12">
+      <Container>
         <StaggerGroup className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4 lg:gap-4">
           {items.map(({ title, body, href, Icon }) => (
             <FadeUp as="li" key={title} className="list-none">

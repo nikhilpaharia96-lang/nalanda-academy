@@ -7,7 +7,8 @@ import {
   BookOpen,
   UsersRound,
   Building2,
-  Sparkles,
+  Award,
+  GraduationCap,
   ArrowRight,
   ArrowLeft,
   Quote,
@@ -20,6 +21,7 @@ import {
   heroCarousel,
   heroWelcome,
   heroQuote,
+  heroAccentLines,
   heroFeatureStrip,
 } from "@/lib/content/site";
 
@@ -30,7 +32,7 @@ const featureIconMap: Record<string, LucideIcon> = {
   "book-open": BookOpen,
   "users-round": UsersRound,
   "building-2": Building2,
-  sparkles: Sparkles,
+  award: Award,
 };
 
 export function Hero() {
@@ -110,19 +112,48 @@ export function Hero() {
 
       {/* Dark navy gradient overlay — strong from the left, transparent
           toward the right, so hero copy stays readable while the campus
-          photograph remains visible on the right side of the frame. */}
+          photograph remains bright, natural and clearly visible across the
+          center and right of the frame (kept to roughly the left third). */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(105deg,rgba(10,26,51,0.97)_0%,rgba(10,26,51,0.93)_28%,rgba(10,26,51,0.72)_48%,rgba(10,26,51,0.32)_68%,rgba(10,26,51,0.08)_85%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(10,26,51,0.92)_0%,rgba(10,26,51,0.82)_18%,rgba(10,26,51,0.55)_36%,rgba(10,26,51,0.24)_52%,rgba(10,26,51,0.06)_68%,rgba(10,26,51,0)_82%)]"
       />
-      {/* Soft bottom fade so the floating feature strip reads cleanly
-          against the image regardless of which slide is showing. */}
+      {/* Very subtle bottom vignette for blending — not a full dark layer. */}
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-navy-950/80 to-transparent"
+        className="absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-t from-navy-950/45 to-transparent"
       />
 
-      <Container className="relative flex min-h-[560px] flex-col justify-center gap-10 pb-40 pt-16 sm:min-h-[620px] sm:pb-48 lg:min-h-0 lg:py-24 lg:pb-[168px]">
+      {/* Handwritten accent over the campus photograph, opposite the main
+          headline — purely decorative, so it's hidden from assistive tech
+          and dropped on smaller screens where the image has less room. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-10 top-28 z-[5] hidden -rotate-6 text-right xl:block xl:right-16 2xl:right-24"
+      >
+        {heroAccentLines.map((line) => (
+          <p
+            key={line}
+            className="font-script text-3xl leading-[1.15] text-white/90 drop-shadow-[0_2px_10px_rgba(10,26,51,0.45)] xl:text-4xl"
+          >
+            {line}
+          </p>
+        ))}
+        <svg
+          viewBox="0 0 140 20"
+          className="ml-auto mt-1 h-4 w-28 text-gold-400"
+          fill="none"
+        >
+          <path
+            d="M2 12C30 2 90 2 138 14"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      <Container className="relative flex min-h-[560px] flex-col justify-center gap-10 pb-10 pt-16 sm:min-h-[620px] sm:pb-14 lg:min-h-0 lg:py-24 lg:pb-40">
         <div className="max-w-xl">
           <motion.p
             initial={initial ?? { opacity: 0, y: 10 }}
@@ -175,14 +206,9 @@ export function Hero() {
                 </span>
               ))}
             </p>
-            <span
-              aria-hidden
-              className="mt-3 flex items-center gap-2 text-gold-400/70"
-            >
-              <span className="h-px flex-1 bg-gold-400/30" />
-              <Sparkles className="h-3 w-3" strokeWidth={1.5} />
-              <span className="h-px flex-1 bg-gold-400/30" />
-            </span>
+            <p className="mt-3 text-right text-sm italic text-gold-400/90">
+              — {heroQuote.attribution}
+            </p>
           </motion.div>
 
           {/* CTAs */}
@@ -203,12 +229,10 @@ export function Hero() {
             </a>
             <a
               href="/admission"
-              className="focus-ring group inline-flex items-center gap-3 rounded-[var(--radius-md)] border border-white/40 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 ease-out hover:border-gold-400 hover:bg-white/10 active:scale-[0.98]"
+              className="focus-ring group inline-flex items-center gap-2.5 rounded-[var(--radius-md)] border border-white/40 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 ease-out hover:border-gold-400 hover:bg-white/10 active:scale-[0.98]"
             >
-              Admissions
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-white/30 transition-colors duration-200 group-hover:border-gold-400 group-hover:text-gold-400">
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-              </span>
+              <GraduationCap className="h-4 w-4" aria-hidden />
+              View Admissions
             </a>
           </motion.div>
         </div>
@@ -229,16 +253,17 @@ export function Hero() {
             type="button"
             onClick={goNext}
             aria-label="Next slide"
-            className="focus-ring group absolute right-4 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-navy-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:border-gold-400 hover:text-gold-400 sm:flex lg:right-8"
+            className="focus-ring group absolute right-4 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-navy-950/30 p-2.5 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:border-gold-400 hover:text-gold-400 sm:flex lg:right-16"
           >
             <ArrowRight className="h-5 w-5" aria-hidden />
           </button>
         </>
       )}
 
-      {/* Slide indicators */}
+      {/* Slide indicators — a vertical dot rail along the right edge of the
+          photograph, clear of the feature strip and the accent text. */}
       {slideCount > 1 && (
-        <div className="absolute inset-x-0 z-10 flex justify-center gap-2 bottom-[168px] sm:bottom-[188px] lg:bottom-[148px]">
+        <div className="absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 flex-col items-center gap-2.5 sm:right-4 sm:flex lg:right-6">
           {heroCarousel.map((slide, i) => (
             <button
               key={slide.src}
@@ -246,28 +271,29 @@ export function Hero() {
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
               aria-current={i === index}
-              className={`focus-ring h-1.5 rounded-full transition-all duration-300 ${
-                i === index ? "w-7 bg-gold-400" : "w-1.5 bg-white/50 hover:bg-white/75"
+              className={`focus-ring w-1.5 rounded-full transition-all duration-300 ${
+                i === index ? "h-7 bg-gold-400" : "h-1.5 bg-white/50 hover:bg-white/75"
               }`}
             />
           ))}
         </div>
       )}
 
-      {/* Mobile / tablet: feature strip stays in normal document flow */}
-      <Container className="relative pb-12 lg:hidden">
-        <StaggerGroup className="grid grid-cols-2 gap-x-4 gap-y-6 rounded-2xl border border-line bg-white p-5 shadow-[var(--shadow-md)] sm:gap-x-6 sm:p-6">
+      {/* Mobile / tablet: feature strip stays in normal document flow, as a
+          semi-transparent glass panel sitting on the photograph itself. */}
+      <Container className="relative pb-10 lg:hidden">
+        <StaggerGroup className="grid grid-cols-2 gap-x-4 gap-y-5 rounded-2xl border border-white/15 bg-navy-950/45 p-5 shadow-[var(--shadow-lg)] backdrop-blur-md sm:gap-x-6 sm:p-6">
           {heroFeatureStrip.map((item) => (
             <FeatureCard key={item.title} {...item} />
           ))}
         </StaggerGroup>
       </Container>
 
-      {/* Desktop: premium floating strip, docked near the bottom of the
-          hero and overlapping the campus visual above it. */}
-      <StaggerGroup className="absolute inset-x-0 bottom-0 z-10 hidden translate-y-1/2 lg:block">
+      {/* Desktop: premium glass strip, docked inside the bottom of the hero
+          photograph — the image stays visible behind and around it. */}
+      <StaggerGroup className="absolute inset-x-0 bottom-8 z-10 hidden lg:block">
         <Container>
-          <div className="grid w-full grid-cols-4 divide-x divide-line overflow-hidden rounded-2xl border border-line bg-white shadow-[var(--shadow-lg)]">
+          <div className="grid w-full grid-cols-4 divide-x divide-white/10 overflow-hidden rounded-2xl border border-white/15 bg-navy-950/45 shadow-[var(--shadow-lg)] backdrop-blur-md">
             {heroFeatureStrip.map((item) => (
               <FeatureCard key={item.title} {...item} />
             ))}
@@ -291,12 +317,12 @@ function FeatureCard({
   return (
     <FadeUp as="li" className="list-none">
       <div className="flex h-full flex-col items-start gap-3 p-5 sm:flex-row sm:items-center sm:gap-3.5 lg:p-6">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy-950 text-gold-400">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold-400/30 bg-white/5 text-gold-400">
           <Icon className="h-5 w-5" strokeWidth={1.5} aria-hidden />
         </span>
         <div>
-          <h3 className="font-display text-sm font-semibold text-navy-950 sm:text-base">{title}</h3>
-          <p className="mt-0.5 text-xs leading-snug text-slate-600 sm:text-sm">{body}</p>
+          <h3 className="font-display text-sm font-semibold text-white sm:text-base">{title}</h3>
+          <p className="mt-0.5 text-xs leading-snug text-white/65 sm:text-sm">{body}</p>
         </div>
       </div>
     </FadeUp>
