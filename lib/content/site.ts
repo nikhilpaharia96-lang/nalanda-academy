@@ -38,7 +38,7 @@ export const heroCarousel = [
 
 // Small handwritten-style eyebrow shown above the "NALANDA ACADEMY"
 // headline in the homepage hero.
-export const heroWelcome = "Welcome to Handique";
+export const heroWelcome = "Welcome to";
 
 // Short Hindi/Hinglish educational-philosophy line shown in the quote card
 // on the homepage hero. Presentation copy only — not attributed to any
@@ -48,31 +48,36 @@ export const heroQuote = {
     "Shiksha sirf kitaabon tak seemit nahi,",
     "balki jeevan ko sahi disha dene ka maarg hai.",
   ],
+  attribution: "Nalanda Academy",
 };
 
-// Four value-proposition cards in the floating strip at the bottom of the
+// Small handwritten-style accent shown over the campus photograph on the
+// right-hand side of the homepage hero, opposite the main headline.
+export const heroAccentLines = ["Better", "Students", "Brighter", "Tomorrow"];
+
+// Four value-proposition cards in the glass strip at the bottom of the
 // homepage hero. General, defensible statements only — no numeric or
 // accreditation claims.
 export const heroFeatureStrip = [
   {
     icon: "book-open" as const,
     title: "Quality Education",
-    body: "Academic excellence and holistic development.",
+    body: "Strong Academic Foundation",
   },
   {
     icon: "users-round" as const,
     title: "Experienced Faculty",
-    body: "Dedicated educators and mentors.",
+    body: "Guidance & Mentorship",
+  },
+  {
+    icon: "award" as const,
+    title: "Holistic Development",
+    body: "Beyond Classrooms",
   },
   {
     icon: "building-2" as const,
-    title: "Modern Infrastructure",
-    body: "A safe and engaging learning environment.",
-  },
-  {
-    icon: "sparkles" as const,
-    title: "Holistic Development",
-    body: "Academics, creativity, sports and leadership.",
+    title: "Modern Facilities",
+    body: "Learn in a Better Environment",
   },
 ];
 
