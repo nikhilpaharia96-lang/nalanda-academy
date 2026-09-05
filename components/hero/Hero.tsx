@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   BookOpen,
   UsersRound,
@@ -26,7 +26,27 @@ import {
 } from "@/lib/content/site";
 
 const easing = [0.16, 1, 0.3, 1] as const;
-const SLIDE_DURATION_MS = 6000;
+// Each slide stays fully visible for VISIBLE_MS, then blends into the next
+// over CROSSFADE_MS — both numbers drive the autoplay timer and the CSS
+// opacity transition together so the "hold, then breathe into the next
+// frame" rhythm stays in sync.
+const VISIBLE_MS = 4000;
+const CROSSFADE_MS = 1400;
+// Total time a slide spends animating on screen (its crossfade-in, its
+// hold, and its crossfade-out overlap the next slide's crossfade-in) —
+// used to pace the slow Ken Burns drift so it never looks like it "snaps".
+const KEN_BURNS_MS = VISIBLE_MS + CROSSFADE_MS;
+
+// A small set of very subtle zoom/pan combinations, cycled across slides so
+// the drift feels alive without any single slide repeating the exact same
+// motion twice in a row. Values are intentionally small (a few percent
+// scale, a few pixels of drift) — cinematic breathing, not a visible zoom.
+const kenBurnsPatterns = [
+  { scale: [1, 1.09] as const, x: [0, -16] as const, y: [0, 8] as const },
+  { scale: [1.08, 1] as const, x: [14, 0] as const, y: [-6, 0] as const },
+  { scale: [1, 1.07] as const, x: [0, 12] as const, y: [10, -8] as const },
+  { scale: [1.06, 1] as const, x: [-12, 6] as const, y: [0, -10] as const },
+];
 
 const featureIconMap: Record<string, LucideIcon> = {
   "book-open": BookOpen,
@@ -52,13 +72,13 @@ export function Hero() {
   const goNext = useCallback(() => goTo(index + 1), [goTo, index]);
   const goPrev = useCallback(() => goTo(index - 1), [goTo, index]);
 
-  // Autoplay — advances every SLIDE_DURATION_MS, pauses on hover/touch and
-  // is skipped entirely for reduced-motion users.
+  // Autoplay — advances every VISIBLE_MS, pauses on hover/touch and is
+  // skipped entirely for reduced-motion users.
   useEffect(() => {
     if (paused || shouldReduceMotion || slideCount <= 1) return;
     const id = setInterval(() => {
       setIndex((current) => (current + 1) % slideCount);
-    }, SLIDE_DURATION_MS);
+    }, VISIBLE_MS);
     return () => clearInterval(id);
   }, [paused, shouldReduceMotion, slideCount]);
 
@@ -87,27 +107,78 @@ export function Hero() {
       aria-roledescription="carousel"
       aria-label="Nalanda Academy campus"
     >
-      {/* Background image carousel */}
-      <div className="absolute inset-0 -z-20">
-        <AnimatePresence initial={false}>
-          <motion.div
-            key={index}
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: easing }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={heroCarousel[index].src}
-              alt={heroCarousel[index].alt}
-              fill
-              priority={index === 0}
-              sizes="100vw"
-              className="object-cover"
-            />
-          </motion.div>
-        </AnimatePresence>
+      {/* Background image carousel — a cinematic crossfade slideshow. Every
+          slide stays mounted the whole time (so all 4–6 images are
+          preloaded up front and a transition never has to wait on a
+          network fetch); only opacity and a slow Ken Burns scale/pan
+          animate, so 60fps is just a transform + opacity tween. */}
+      <div className="absolute inset-0 -z-20 overflow-hidden bg-navy-950">
+        {heroCarousel.map((slide, i) => {
+          const active = i === index;
+          const pattern = kenBurnsPatterns[i % kenBurnsPatterns.length];
+          return (
+            <div
+              key={slide.src}
+              aria-hidden={!active}
+              className="absolute inset-0"
+              style={{
+                opacity: active ? 1 : 0,
+                transition: `opacity ${CROSSFADE_MS}ms ease-in-out`,
+                willChange: "opacity",
+              }}
+            >
+              <motion.div
+                className="absolute inset-0"
+                initial={false}
+                animate={{
+                  scale: active ? pattern.scale[1] : pattern.scale[0],
+                  x: active ? pattern.x[1] : pattern.x[0],
+                  y: active ? pattern.y[1] : pattern.y[0],
+                }}
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0 }
+                    : active
+                      ? { duration: KEN_BURNS_MS / 1000, ease: "linear" }
+                      : { duration: 0 }
+                }
+                style={{ willChange: "transform" }}
+              >
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  priority={i === 0}
+                  loading={i === 0 ? undefined : "eager"}
+                  sizes="100vw"
+                  quality={85}
+                  className="object-cover [filter:contrast(1.06)_saturate(1.08)_brightness(1.02)]"
+                />
+              </motion.div>
+            </div>
+          );
+        })}
+
+        {/* Subtle film grain — a tiled noise texture blended softly over
+            the photographs for a filmic, non-digital feel. Static and
+            cheap (no per-frame cost), so it never touches the 60fps budget. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            backgroundSize: "140px 140px",
+          }}
+        />
+
+        {/* Soft radial vignette at the edges — reinforces depth without
+            darkening the center of the frame where the campus photo needs
+            to stay bright and clearly visible. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 [background:radial-gradient(120%_100%_at_50%_40%,transparent_55%,rgba(10,26,51,0.28)_100%)]"
+        />
       </div>
 
       {/* Dark navy gradient overlay — strong from the left, transparent
