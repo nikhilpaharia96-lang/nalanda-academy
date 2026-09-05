@@ -11,14 +11,16 @@ const LOGO_SRC = "/images/brand/nalanda-academy-logo.webp";
 export function Logo({
   className,
   tone = "dark",
+  showTagline = false,
 }: {
   className?: string;
   tone?: "dark" | "light";
+  showTagline?: boolean;
 }) {
   return (
     <Link
       href="/"
-      className={cn("focus-ring group flex min-w-0 items-center gap-2.5 rounded-sm", className)}
+      className={cn("focus-ring group flex min-w-0 items-center gap-2 rounded-sm sm:gap-2.5", className)}
       aria-label="Nalanda Academy — Home"
     >
       <Image
@@ -27,15 +29,27 @@ export function Logo({
         width={96}
         height={96}
         priority
-        className="h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10"
+        className="h-8 w-8 shrink-0 object-contain sm:h-10 sm:w-10"
       />
-      <span
-        className={cn(
-          "truncate font-display text-[15px] font-semibold leading-tight tracking-tight sm:text-base",
-          tone === "dark" ? "text-navy-950" : "text-white"
+      <span className="flex min-w-0 flex-col justify-center">
+        <span
+          className={cn(
+            "truncate font-display text-[13px] font-semibold leading-tight tracking-tight sm:text-base",
+            tone === "dark" ? "text-navy-950" : "text-white"
+          )}
+        >
+          Nalanda Academy
+        </span>
+        {showTagline && (
+          <span
+            className={cn(
+              "truncate text-[9px] font-medium leading-tight tracking-wide lg:hidden",
+              tone === "dark" ? "text-slate-500" : "text-white/75"
+            )}
+          >
+            Learn • Grow • Build Tomorrow
+          </span>
         )}
-      >
-        Nalanda Academy
       </span>
     </Link>
   );
