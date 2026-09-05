@@ -8,6 +8,7 @@ import {
   UsersRound,
   Building2,
   Award,
+  Sprout,
   GraduationCap,
   ArrowRight,
   ArrowLeft,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { FadeUp, StaggerGroup } from "@/components/motion/Reveal";
+import { cn } from "@/lib/utils";
 import {
   siteConfig,
   heroCarousel,
@@ -53,7 +55,13 @@ const featureIconMap: Record<string, LucideIcon> = {
   "users-round": UsersRound,
   "building-2": Building2,
   award: Award,
+  sprout: Sprout,
 };
+
+// Mobile feature panel: same four facts as the desktop strip, just in the
+// order and iconography requested for the compact mobile card grid — the
+// shared `heroFeatureStrip` data (and the desktop strip below) is untouched.
+const mobileFeatureOrder = ["Quality Education", "Experienced Faculty", "Modern Facilities", "Holistic Development"];
 
 export function Hero() {
   const shouldReduceMotion = useReducedMotion();
@@ -97,9 +105,16 @@ export function Hero() {
 
   const initial = shouldReduceMotion ? false : undefined;
 
+  // Reorder + re-icon just the four items for the mobile card grid (title
+  // lookup keeps this resilient to the shared array being edited later).
+  const mobileFeatures = mobileFeatureOrder.map((title) => {
+    const item = heroFeatureStrip.find((f) => f.title === title) ?? heroFeatureStrip[0];
+    return title === "Holistic Development" ? { ...item, icon: "sprout" } : item;
+  });
+
   return (
     <section
-      className="relative isolate overflow-hidden bg-navy-950 pt-[72px] lg:pt-[108px]"
+      className="relative isolate min-h-[100svh] overflow-hidden bg-navy-950 pt-[72px] sm:min-h-0 lg:pt-[108px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={onTouchStart}
@@ -184,10 +199,20 @@ export function Hero() {
       {/* Dark navy gradient overlay — strong from the left, transparent
           toward the right, so hero copy stays readable while the campus
           photograph remains bright, natural and clearly visible across the
-          center and right of the frame (kept to roughly the left third). */}
+          center and right of the frame (kept to roughly the left third).
+          Tablet and desktop only — mobile uses its own corner gradient
+          below, tuned for the narrower, taller frame. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(10,26,51,0.92)_0%,rgba(10,26,51,0.82)_18%,rgba(10,26,51,0.55)_36%,rgba(10,26,51,0.24)_52%,rgba(10,26,51,0.06)_68%,rgba(10,26,51,0)_82%)]"
+        className="absolute inset-0 -z-10 hidden bg-[linear-gradient(100deg,rgba(10,26,51,0.92)_0%,rgba(10,26,51,0.82)_18%,rgba(10,26,51,0.55)_36%,rgba(10,26,51,0.24)_52%,rgba(10,26,51,0.06)_68%,rgba(10,26,51,0)_82%)] sm:block"
+      />
+      {/* Mobile-only overlay — dark down the left column (where all the
+          copy sits, top to bottom) fading out toward the right, plus extra
+          weight in the bottom-left where the glass panels stack up. Keeps
+          the sky, palm trees and right-hand building bright and visible. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-[linear-gradient(112deg,rgba(10,26,51,0.88)_0%,rgba(10,26,51,0.8)_24%,rgba(10,26,51,0.62)_44%,rgba(10,26,51,0.36)_64%,rgba(10,26,51,0.12)_82%,rgba(10,26,51,0)_96%)] sm:hidden"
       />
       {/* Very subtle bottom vignette for blending — not a full dark layer. */}
       <div
@@ -224,13 +249,54 @@ export function Hero() {
         </svg>
       </div>
 
-      <Container className="relative flex min-h-[560px] flex-col justify-center gap-10 pb-10 pt-16 sm:min-h-[620px] sm:pb-14 lg:min-h-0 lg:py-24 lg:pb-40">
+      {/* Mobile-only version of the same handwritten accent — smaller,
+          less rotated, and tucked under the header so it never collides
+          with the "Welcome to" eyebrow or the header itself. Hidden from
+          assistive tech, same as the desktop version above. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-4 top-[84px] z-[5] -rotate-3 text-right sm:hidden"
+      >
+        {heroAccentLines.map((line) => (
+          <p
+            key={line}
+            className="font-script text-xl leading-[1.15] text-white/90 drop-shadow-[0_2px_8px_rgba(10,26,51,0.5)]"
+          >
+            {line}
+          </p>
+        ))}
+        <svg viewBox="0 0 100 16" className="ml-auto mt-1 h-3 w-16 text-gold-400" fill="none">
+          <path
+            d="M2 10C22 2 66 2 98 12"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      <Container className="relative flex min-h-[520px] flex-col justify-center gap-10 pb-8 pt-16 sm:min-h-[620px] sm:pb-14 lg:min-h-0 lg:py-24 lg:pb-40">
         <div className="max-w-xl">
+          {/* Mobile: small tracked-out uppercase label with a short gold
+              dash, matching the mobile reference. Desktop/tablet keep the
+              cursive script treatment unchanged, just below. */}
+          <motion.div
+            initial={initial ?? { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: easing }}
+            className="flex items-center gap-2 sm:hidden"
+          >
+            <span aria-hidden className="h-px w-6 bg-gold-400" />
+            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-gold-400">
+              {heroWelcome}
+            </span>
+          </motion.div>
+
           <motion.p
             initial={initial ?? { opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: easing }}
-            className="font-script text-4xl leading-none text-gold-400 sm:text-5xl"
+            className="hidden font-script text-4xl leading-none text-gold-400 sm:block sm:text-5xl"
           >
             {heroWelcome}
           </motion.p>
@@ -239,7 +305,7 @@ export function Hero() {
             initial={initial ?? { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, ease: easing, delay: 0.12 }}
-            className="font-editorial mt-4 text-[46px] font-bold uppercase leading-[1.02] tracking-tight text-white sm:text-[64px] lg:text-[76px]"
+            className="font-editorial mt-4 text-[52px] font-bold uppercase leading-[1.02] tracking-tight text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.85)] sm:text-[64px] sm:drop-shadow-none lg:text-[76px]"
           >
             <span className="block">Nalanda</span>
             <span className="block text-gold-400">Academy</span>
@@ -267,7 +333,7 @@ export function Hero() {
             />
             <Quote
               aria-hidden
-              className="h-6 w-6 shrink-0 fill-gold-400/20 text-gold-400/70"
+              className="h-8 w-8 shrink-0 fill-gold-400/20 text-gold-400/70 sm:h-6 sm:w-6"
               strokeWidth={1.5}
             />
             <p className="mt-2 text-[15px] italic leading-relaxed text-white/90 sm:text-base">
@@ -282,16 +348,18 @@ export function Hero() {
             </p>
           </motion.div>
 
-          {/* CTAs */}
+          {/* CTAs — full-width and stacked on mobile for large, thumb-
+              friendly targets; back to their inline/content-width layout
+              from sm up, unchanged from before. */}
           <motion.div
             initial={initial ?? { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: easing, delay: 0.54 }}
-            className="mt-8 flex flex-wrap gap-3 sm:gap-4"
+            className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4"
           >
             <a
               href="/about"
-              className="focus-ring group inline-flex items-center gap-3 rounded-[var(--radius-md)] bg-gold-500 px-6 py-3 text-sm font-semibold text-navy-950 shadow-[var(--shadow-md)] transition-all duration-200 ease-out hover:bg-gold-400 active:scale-[0.98]"
+              className="focus-ring group inline-flex w-full items-center justify-center gap-3 rounded-[var(--radius-md)] bg-gold-500 px-6 py-3.5 text-[15px] font-semibold text-navy-950 shadow-[var(--shadow-md)] transition-all duration-200 ease-out hover:bg-gold-400 active:scale-[0.98] sm:w-auto sm:justify-start sm:py-3 sm:text-sm"
             >
               Explore Academy
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy-950/15 transition-transform duration-200 group-hover:translate-x-0.5">
@@ -300,10 +368,11 @@ export function Hero() {
             </a>
             <a
               href="/admission"
-              className="focus-ring group inline-flex items-center gap-2.5 rounded-[var(--radius-md)] border border-white/40 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-200 ease-out hover:border-gold-400 hover:bg-white/10 active:scale-[0.98]"
+              className="focus-ring group inline-flex w-full items-center justify-center gap-2.5 rounded-[var(--radius-md)] border border-white/40 bg-white/5 px-6 py-3.5 text-[15px] font-semibold text-white backdrop-blur-sm transition-all duration-200 ease-out hover:border-gold-400 hover:bg-white/10 active:scale-[0.98] sm:w-auto sm:justify-start sm:py-3 sm:text-sm"
             >
               <GraduationCap className="h-4 w-4" aria-hidden />
               View Admissions
+              <ArrowRight className="h-4 w-4 sm:hidden" aria-hidden />
             </a>
           </motion.div>
         </div>
@@ -350,10 +419,19 @@ export function Hero() {
         </div>
       )}
 
-      {/* Mobile / tablet: feature strip stays in normal document flow, as a
-          semi-transparent glass panel sitting on the photograph itself. */}
-      <Container className="relative pb-10 lg:hidden">
-        <StaggerGroup className="grid grid-cols-2 gap-x-4 gap-y-5 rounded-2xl border border-white/15 bg-navy-950/45 p-5 shadow-[var(--shadow-lg)] backdrop-blur-md sm:gap-x-6 sm:p-6">
+      {/* Mobile: compact 2×2 glass card grid, reordered/re-iconed per the
+          mobile reference, with centered icon+text per card. */}
+      <Container className="relative pb-8 sm:hidden">
+        <StaggerGroup className="grid grid-cols-2 gap-x-4 gap-y-5 rounded-2xl border border-white/15 bg-navy-950/45 p-5 shadow-[var(--shadow-lg)] backdrop-blur-md">
+          {mobileFeatures.map((item) => (
+            <FeatureCard key={item.title} {...item} centerOnMobile />
+          ))}
+        </StaggerGroup>
+      </Container>
+
+      {/* Tablet: same glass strip as before, unchanged. */}
+      <Container className="relative hidden pb-10 sm:block lg:hidden">
+        <StaggerGroup className="grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-white/15 bg-navy-950/45 p-6 shadow-[var(--shadow-lg)] backdrop-blur-md">
           {heroFeatureStrip.map((item) => (
             <FeatureCard key={item.title} {...item} />
           ))}
@@ -379,19 +457,26 @@ function FeatureCard({
   icon,
   title,
   body,
+  centerOnMobile = false,
 }: {
   icon: string;
   title: string;
   body: string;
+  centerOnMobile?: boolean;
 }) {
   const Icon = featureIconMap[icon];
   return (
     <FadeUp as="li" className="list-none">
-      <div className="flex h-full flex-col items-start gap-3 p-5 sm:flex-row sm:items-center sm:gap-3.5 lg:p-6">
+      <div
+        className={cn(
+          "flex h-full gap-3 p-5 sm:flex-row sm:items-center sm:gap-3.5 lg:p-6",
+          centerOnMobile ? "flex-col items-center gap-2.5 text-center" : "flex-col items-start"
+        )}
+      >
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold-400/30 bg-white/5 text-gold-400">
           <Icon className="h-5 w-5" strokeWidth={1.5} aria-hidden />
         </span>
-        <div>
+        <div className={centerOnMobile ? "sm:text-left" : undefined}>
           <h3 className="font-display text-sm font-semibold text-white sm:text-base">{title}</h3>
           <p className="mt-0.5 text-xs leading-snug text-white/65 sm:text-sm">{body}</p>
         </div>
