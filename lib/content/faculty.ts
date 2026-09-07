@@ -5,14 +5,14 @@ import type { FacultyMember } from "@/lib/types";
 // `facultyMembers` below (which also powers /faculty) so that page is
 // unaffected by this section's copy/design.
 //
-// DEMO DATA NOTICE: the photos and bio fields below (name, designation,
-// qualification, experience, quote) are placeholder/demo content for design
-// review only. Photos are stand-in portraits — they do not depict, name, or
-// describe real Nalanda Academy staff, and nothing here should be published
-// as official. Each demo entry is flagged `isDemo: true`, which renders a
-// small "Demo Profile" badge on its photo.
+// `featuredFaculty` below now reflects real, school-confirmed staff data
+// (name + role) sourced from the official staff list. No photo has been
+// supplied yet, so it renders via the existing placeholder image — add a
+// real photoUrl once available (isPlaceholder can then be set to false).
+// Per privacy policy, personal contact details (phone/email/date of birth)
+// are never published on the public site — see `facultyMembers` note below.
 //
-// TO REPLACE WITH REAL DATA: see "files to update" note at the bottom of
+// TO REPLACE / UPDATE FURTHER: see "files to update" note at the bottom of
 // this file.
 // ---------------------------------------------------------------------------
 
@@ -26,22 +26,21 @@ export const facultyHero = {
   cta: { label: "Meet All Faculty", href: "/faculty" },
 };
 
-// DEMO CONTENT — for design/layout review only. This is not an official
-// profile: the name, designation, qualification, experience and quote below
-// are fictional placeholders, and the photo is a stand-in portrait, not a
-// real staff photograph. Replace with school-confirmed data before publishing
-// (see note at bottom of file for exactly which fields to update).
+// Real, school-confirmed profile. No photo supplied yet (renders via the
+// existing placeholder image system). Qualification/experience/quote are
+// intentionally left blank rather than invented — add them once the school
+// supplies that information.
 export const featuredFaculty = {
-  isPlaceholder: false as const,
-  isDemo: true as const,
-  photoUrl: "/images/faculty/demo-faculty-07-principal.png",
-  photoAlt: "Demo portrait — placeholder for featured faculty photography",
+  isPlaceholder: true as const,
+  isDemo: false as const,
+  photoUrl: undefined as string | undefined,
+  photoAlt: "Faculty portrait placeholder — replace with official photography",
   label: "Featured Faculty",
-  name: "Demo Faculty Profile" as string | null,
-  designation: "Principal (Demo)" as string | null,
-  qualification: "Qualification Placeholder" as string | null,
-  experience: "Experience Placeholder" as string | null,
-  quote: "Demo quote placeholder — replace with an official statement." as string | null,
+  name: "Rupam Doloi" as string | null,
+  designation: "Principal" as string | null,
+  qualification: null as string | null,
+  experience: null as string | null,
+  quote: null as string | null,
   placeholderNote: "Official faculty information will be published here.",
 };
 
@@ -106,44 +105,51 @@ export const facultyCta = {
   button: { label: "View All Faculty", href: "/faculty" },
 };
 
-// DEMO faculty entries for design/layout review. Names, designations,
-// subjects and experience are clearly fictional placeholders — not real
-// staff data. Photos are stand-in portraits (not depictions of actual
-// Nalanda Academy teachers). Each entry is flagged `isDemo: true`, which
-// renders a small "Demo Profile" badge in the UI.
-//
-// Replace with official staff data supplied by the school before publishing
-// (see note at bottom of file for exactly which fields to update).
+// Real staff data supplied by the school's official records. Only name,
+// role/designation, and the section/level they teach are published here —
+// personal contact details (phone number, personal email, date of birth)
+// from the source record are intentionally excluded from this public
+// website for privacy reasons. No photographs have been supplied yet, so
+// every entry renders via the existing placeholder image (`isPlaceholder:
+// true`) until real, consented staff photography is provided.
 export const facultyMembers: FacultyMember[] = [
-  { id: "f1", name: "Faculty Member 01", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Languages", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-01.png", isDemo: true },
-  { id: "f2", name: "Faculty Member 02", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-02.png", isDemo: true },
-  { id: "f3", name: "Faculty Member 03", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-03.png", isDemo: true },
-  { id: "f4", name: "Faculty Member 04", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-04.png", isDemo: true },
-  { id: "f5", name: "Faculty Member 05", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-05.png", isDemo: true },
-  { id: "f6", name: "Faculty Member 06", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Humanities", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-06.png", isDemo: true },
-  { id: "f7", name: "Faculty Member 07", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Humanities", photoAlt: "Demo portrait — placeholder faculty photo", isPlaceholder: true },
-  { id: "f8", name: "Faculty Member 08", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sciences", photoAlt: "Demo portrait — placeholder faculty photo", photoUrl: "/images/faculty/demo-faculty-08-spare.png", isDemo: true },
-  { id: "f9", name: "Faculty Member 09", designation: "Demo Faculty Profile", subject: "Subject / Department Placeholder", department: "Sports", photoAlt: "Faculty portrait placeholder", isPlaceholder: true },
+  { id: "rupam-doloi", name: "Rupam Doloi", designation: "Principal", subject: "Administration", department: "Administration", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "surya-pratim-chakravorty", name: "Surya Pratim Chakravorty", designation: "Director", subject: "Administration", department: "Administration", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "uttam-biswas", name: "Uttam Biswas", designation: "Teacher & Office Assistant", subject: "Primary & Upper Primary", department: "Primary & Upper Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "jitu-moni-sikdar", name: "Jitu Moni Sikdar", designation: "Teacher", subject: "Pre-Primary & Primary", department: "Pre-Primary & Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "nripen-teron", name: "Nripen Teron", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "gopa-chowdhury", name: "Gopa Chowdhury", designation: "Teacher", subject: "Pre-Primary", department: "Pre-Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "nitu-moni-kalita", name: "Nitu Moni Kalita", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "vicky-kumar-bharali", name: "Vicky Kumar Bharali", designation: "Teacher", subject: "Upper Primary", department: "Upper Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "mamoni-chakravorty", name: "Mamoni Chakravorty", designation: "Teacher", subject: "Primary", department: "Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "jyoti-basfore", name: "Jyoti Basfore", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "jehirul-islam", name: "Jehirul Islam", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "jayashree-dutta", name: "Jayashree Dutta", designation: "Teacher", subject: "Pre-Primary & Primary", department: "Pre-Primary & Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "rabita-mazi", name: "Rabita Mazi", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "puja-rani-dey", name: "Puja Rani Dey", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "ankush-kumar-dey", name: "Ankush Kumar Dey", designation: "Teacher", subject: "Primary & Upper Primary", department: "Primary & Upper Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "khushboo-kumari", name: "Khushboo Kumari", designation: "Teacher", subject: "Upper Primary & Secondary", department: "Upper Primary & Secondary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
+  { id: "jagat-gogoi", name: "Jagat Gogoi", designation: "Teacher & Accountant", subject: "Primary & Upper Primary", department: "Primary & Upper Primary", photoAlt: "Faculty portrait placeholder — replace with official photography", isPlaceholder: true },
 ];
 
 export const departments = Array.from(new Set(facultyMembers.map((f) => f.department)));
 export const subjects = Array.from(new Set(facultyMembers.map((f) => f.subject)));
 
 // ---------------------------------------------------------------------------
-// FILES TO UPDATE WHEN OFFICIAL FACULTY DATA ARRIVES
+// FILES TO UPDATE WHEN OFFICIAL STAFF PHOTOGRAPHY ARRIVES
 // ---------------------------------------------------------------------------
 // This is the ONLY file that needs content changes. No component files need
 // to be touched — FacultySectionView, FacultyCard and FacultyPhoto all read
 // from here.
 //
 // 1. Add real photo files under /public/images/faculty/ (any filename).
-// 2. For `featuredFaculty`: set photoUrl to the real path, set isDemo to
-//    false, and fill in the real name/designation/qualification/experience/
-//    quote (or leave as `isPlaceholder: true` with photoUrl omitted if no
-//    profile is ready yet).
+// 2. For `featuredFaculty`: set photoUrl to the real path, set
+//    isPlaceholder to false, and fill in qualification/experience/quote if
+//    the school supplies them.
 // 3. For each entry in `facultyMembers`: set photoUrl to the real photo
-//    path, set isDemo to false (or remove it), and replace name/designation/
-//    subject/department with real values. Entries without a photoUrl (f7,
-//    f9) already show the existing text placeholder — add photoUrl to them
-//    the same way once photos are available.
+//    path and set isPlaceholder to false once a photo is available.
+//
+// Note: subject/department values above reflect the grade level/section
+// each staff member teaches (as recorded in the school's staff list), since
+// subject-by-subject specialization was not part of the source data.
 // ---------------------------------------------------------------------------
